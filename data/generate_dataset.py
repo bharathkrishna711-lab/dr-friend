@@ -695,5 +695,5 @@ def validate_dataset(df: pd.DataFrame):
 
 
 if __name__ == "__main__":
-    df = generate_dataset(n_total=3000, output_path="/home/claude/dr_friend_dataset.csv")
+    df = generate_dataset(n_total=3000, output_path="data/dr_friend_dataset.csv")
     validate_dataset(df)
