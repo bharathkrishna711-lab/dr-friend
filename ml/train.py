@@ -59,7 +59,7 @@ def load_preprocessed_data():
  #TRAIN LOGISTIC REGRESSION MODEL
 #================================================================
 
-def train_logistic_regression(X_train, y_train, X_test, y_test):
+def train_logistic_regression(X_train, y_train, X_test, y_test,C_value=1.0):
     """
     Train baseline Logistic Regression model with MLflow tracking.
     Returns: trained model, test predictions
@@ -69,8 +69,8 @@ def train_logistic_regression(X_train, y_train, X_test, y_test):
     print("=" * 80)
     
     # Start MLflow run
-    with mlflow.start_run(run_name="Logistic_Regression_Baseline"):
-        C_value = 0.01
+    with mlflow.start_run(run_name=f"Logistic_Regression_C_{C_value}"):
+        
          
         
         # Log parameters
@@ -143,6 +143,75 @@ def setup_mlflow():
     print(" MLflow experiment initialized")
 
 
+#============================================================================
+#TRAIN RANDOM FOREST 
+#============================================================================
+
+def train_rf_classifier(X_train, y_train,X_test,y_test,num_estimator=100):
+    #start ml flow run
+    with mlflow.start_run(run_name="RandomForest classifier"):
+        params= {
+            'num_estimator' : 100,
+            'criterion' : 'gini',
+            'random_state':RANDOM_STATE,
+            'model': 'RandomForestClassifier'
+        }
+        mlflow.log_params
+
+        #initialize model
+        model=RandomForestClassifier(
+            n_estimators=num_estimator,
+            random_state=RANDOM_STATE,
+            n_jobs=1
+        )
+
+        #Train model
+        print("\n Training model\n")
+        model.fit(X_train,y_train)
+        print("\n Training completed\n")
+
+        #make predictions
+        y_pred_train=model.predict(X_train)
+        y_pred_test=model.predict(X_test)
+
+        #calc metrics
+        train_acc=accuracy_score(y_train,y_pred_train)
+        test_acc=accuracy_score(y_test,y_pred_test)
+        precision = precision_score(y_test, y_pred_test, average='weighted')
+        recall = recall_score(y_test, y_pred_test, average='weighted')
+        f1 = f1_score(y_test, y_pred_test, average='weighted')
+
+        #log metrics to Mlflow
+        mlflow.log_metric("train_accuracy", train_acc)
+        mlflow.log_metric("test_accuracy", test_acc)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
+        mlflow.log_metric("f1_score", f1)
+        mlflow.log_metric("overfitting_gap", train_acc - test_acc)
+
+        # Print performance
+        print(f"\nModel Performance:")
+        print(f"   Training Accuracy: {train_acc:.4f} ({train_acc*100:.2f}%)")
+        print(f"   Test Accuracy: {test_acc:.4f} ({test_acc*100:.2f}%)")
+        
+        # Detailed metrics
+        print(f"\nDetailed Test Metrics:")
+        print(f"   Precision: {precision:.4f}")
+        print(f"   Recall: {recall:.4f}")
+        print(f"   F1-Score: {f1:.4f}")
+
+        # Log model to MLflow
+        mlflow.sklearn.log_model(model, "random_forest_model")
+
+        print("\nMetrics logged to MLflow")
+        
+        return model, y_pred_test
+
+
+
+
+
+
 # ============================================================================
 # TEST: RUN THE CODE
 # ============================================================================
@@ -153,11 +222,44 @@ if __name__ == "__main__":
     
     # Load data
     X_train, X_test, y_train, y_test, scaler, le_target = load_preprocessed_data()
+
+    #Logistic regression baseline
+    print("LOGISTIC REGRESSION - BASELINE")
+    print("*" * 40)
+    model_lr_base, _ = train_logistic_regression(
+        X_train, y_train, X_test, y_test, C_value=1.0
+    )
+
+    # Tuned LR
     
-    # Train model
-    model, y_pred = train_logistic_regression(X_train, y_train, X_test, y_test)
+    print("LOGISTIC REGRESSION - TUNED")
+    print("*" * 40)
+    model_lr_tuned, _ = train_logistic_regression(
+        X_train, y_train, X_test, y_test, C_value=0.01
+    )
+
+    #Random forest
+    print("\n Random Forest")
+    print("*" * 40)
+    model_rf=train_rf_classifier(X_train,y_train,X_test,y_test,num_estimator=100)
+
+    # ========================================
+    # SUMMARY
+    # ========================================
     
     print("\n" + "=" * 80)
-    print(" TRAINING COMPLETE!")
     print("=" * 80)
-    print("\nTo view MLflow UI, run: mlflow ui")
+    print("\nCheck MLflow UI for comparison:")
+    print("Run: mlflow ui")
+    print("Open: http://localhost:5000")
+
+
+
+    
+    # # Train model
+    # model, y_pred = train_logistic_regression(X_train, y_train, X_test, y_test)
+    
+    # print("\n" + "=" * 80)
+    # print(" TRAINING COMPLETE!")
+    # print("=" * 80)
+    # print("\nTo view MLflow UI, run: mlflow ui")
