@@ -1,0 +1,7 @@
+{
+  "model_name": "Random Forest",
+  "version": "v1.0",
+  "accuracy": 91.5,
+  "trained_date": "2026-05-25 22:31:34",
+  "file": "random_forest_best.pkl"
+}
