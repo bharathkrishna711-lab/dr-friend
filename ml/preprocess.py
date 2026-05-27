@@ -145,6 +145,15 @@ def split_data(df):
     
     # Separate features and target
     X = df.drop(columns=[TARGET_COL])
+
+    # Drop only broad_category - directly derived from disease label (leakage) (faced data leakage evident from low confidence level)
+    # comorbidity is kept - assigned independently and modifies symptoms realistically
+    leaky_cols = [col for col in X.columns 
+                if col.startswith('broad_category_')]
+    X = X.drop(columns=leaky_cols)
+    print(f"  Dropped {len(leaky_cols)} leaky feature columns")
+
+
     y = df[TARGET_COL]
     
     # Split

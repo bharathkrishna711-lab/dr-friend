@@ -50,7 +50,7 @@ def save_model(model, model_name, version, accuracy, scaler, le_target):
     from datetime import datetime
     
     # Create models directory
-    models_dir = Path("../models")  # One level up from ml/
+    models_dir = Path(__file__).parent.parent / "models"
     models_dir.mkdir(exist_ok=True)
     
     print("\n" + "=" * 80)
@@ -69,14 +69,12 @@ def save_model(model, model_name, version, accuracy, scaler, le_target):
     
     # Save preprocessing objects (only once)
     scaler_path = models_dir / "scaler.pkl"
-    if not scaler_path.exists():
-        joblib.dump(scaler, scaler_path)
-        print(f"Saved: {scaler_path}")
+    joblib.dump(scaler, scaler_path)
+    print(f"Saved: {scaler_path}")
     
     le_path = models_dir / "label_encoder.pkl"
-    if not le_path.exists():
-        joblib.dump(le_target, le_path)
-        print(f"Saved: {le_path}")
+    joblib.dump(le_target, le_path)
+    print(f"Saved: {le_path}")
     
     # Save model info
     model_info = {
@@ -446,16 +444,17 @@ if __name__ == "__main__":
     print("SELECTING AND SAVING BEST MODEL")
     print("*" * 40)
 
-    # Save Random Forest (best model)
+    # Calculate actual accuracy from the retrained model
+    rf_test_acc = round(accuracy_score(y_test, model_rf.predict(X_test)) * 100, 2)
+
     save_model(
         model=model_rf,
         model_name="random_forest",
-        version="v1.0",
-        accuracy=91.50,
+        version="v2.0",
+        accuracy=rf_test_acc,
         scaler=scaler,
         le_target=le_target
     )
-
 
 
 
@@ -467,18 +466,19 @@ if __name__ == "__main__":
     # SUMMARY
     # ========================================
     
+    lr_base_acc = round(accuracy_score(y_test, model_lr_base.predict(X_test)) * 100, 2)
+    lr_tuned_acc = round(accuracy_score(y_test, model_lr_tuned.predict(X_test)) * 100, 2)
+    xgb_acc = round(accuracy_score(y_test, model_xgb_baseline.predict(X_test)) * 100, 2)
+
     print("\n" + "=" * 80)
     print("TRAINING COMPLETE!")
     print("=" * 80)
     print("\n Model Comparison:")
-    print("   LR Baseline:  82.00%")
-    print("   LR Tuned:     88.67%")
-    print("   RF:           91.50%  SAVED")
-    print("   XGBoost:      91.00%")
+    print(f"   LR Baseline:  {lr_base_acc}%")
+    print(f"   LR Tuned:     {lr_tuned_acc}%")
+    print(f"   RF:           {rf_test_acc}%  SAVED")
+    print(f"   XGBoost:      {xgb_acc}%")
     print("\n Saved to: models/random_forest_best.pkl")
     print("\nCheck MLflow UI: http://localhost:5000")
-
-
-
     
     
