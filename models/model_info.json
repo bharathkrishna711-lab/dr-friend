@@ -2,6 +2,6 @@
   "model_name": "Random Forest",
   "version": "v2.0",
   "accuracy": 88.33,
-  "trained_date": "2026-05-27 21:59:25",
+  "trained_date": "2026-05-27 22:42:45",
   "file": "random_forest_best.pkl"
 }
