@@ -50,7 +50,8 @@ HIGH_RISK_DISEASES = [
 ]
 MEDIUM_RISK_DISEASES = [
     "COPD", "COVID-19", "Dengue Fever",
-    "Type 2 Diabetes", "Hypertensive Crisis", "Bronchitis"
+    "Type 2 Diabetes", "Hypertensive Crisis", "Bronchitis",
+    "Typhoid", "Hypothyroidism", "Anaemia", "Migraine"
 ]
 
 def assess_urgency(vitals: dict, predicted_disease: str) -> dict:

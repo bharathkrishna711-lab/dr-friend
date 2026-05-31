@@ -17,7 +17,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from llm.groq_client import call_llm
+from llm.openai_client import call_llm
 
 # -----------------------------------------------------------------------
 # Expected output schema
@@ -98,6 +98,20 @@ STRICT RULES:
 4. If a vital sign is not mentioned, use the default value shown.
 5. If a symptom is not mentioned, set it to 0.
 6. Calculate BMI as weight_kg / (height_m * height_m) if not given.
+
+SYMPTOM SYNONYMS - map these to the correct field:
+- "loose motion", "loose stool", "runny stool", "stomach upset" -> sym_diarrhoea = 1
+- "loose motion" also implies -> sym_abdominal_pain = 1
+- "throwing up", "puking", "vomited" -> sym_vomiting = 1
+- "feel like vomiting", "want to vomit", "nauseous" -> sym_nausea = 1
+- "tummy pain", "stomach ache", "stomach pain", "belly pain" -> sym_abdominal_pain = 1
+- "breathlessness", "difficulty breathing", "cant breathe" -> sym_shortness_of_breath = 1
+- "phlegm", "mucus", "sputum" -> sym_productive_cough = 1
+- "body pain", "body ache" -> sym_muscle_aches = 1
+- "yellow eyes", "yellow skin" -> sym_jaundice = 1
+- "racing heart", "heart beating fast" -> sym_palpitations = 1
+- "passing out", "blacked out" -> sym_fainting = 1
+- "pins and needles" -> sym_numbness_tingling = 1
 
 SCHEMA TO FOLLOW:
 {schema_str}
