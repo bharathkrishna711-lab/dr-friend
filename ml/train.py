@@ -41,7 +41,7 @@ def save_model(model, model_name, version, accuracy, scaler, le_target):
         model: Trained model to save
         model_name: Name (e.g., "random_forest")
         version: Version string (e.g., "v1.0")
-        accuracy: Test accuracy as float (e.g., 91.50)
+        accuracy: Test accuracy as float (e.g., 88.70)
         scaler: Fitted StandardScaler
         le_target: Fitted LabelEncoder
     """
@@ -105,7 +105,7 @@ def load_preprocessed_data():
     print("LOADING PREPROCESSED DATA")
     print("=" * 80)
 
-    # Call preprocessing pipeline (THIS WAS MISSING!)
+    # Call preprocessing pipeline 
     X_train, X_test, y_train, y_test, scaler, le_target = preprocess_pipeline()
 
     
