@@ -2,7 +2,7 @@
 Dr. Friend — Synthetic Healthcare Dataset Generator
 =====================================================
 Generates a clinically-informed synthetic dataset with:
-- 15 diseases across 5 broad categories
+- 16 diseases across 5 broad categories
 - 13 vitals (home-measurable)
 - 37 binary symptom flags + symptom duration
 - Real-world noise: missing values, measurement errors,
@@ -46,12 +46,13 @@ DISEASE_WEIGHTS = {
     "Migraine":            0.09,
     "Anxiety Attack":      0.08,
     "Type 2 Diabetes":     0.08,
-    "COVID-19":            0.08,
+    "COVID-19":            0.07,
     "Pneumonia":           0.07,
-    "Typhoid":             0.07,
-    "Dengue Fever":        0.07,
+    "Typhoid":             0.06,
+    "Dengue Fever":        0.06,
     "Malaria":             0.06,
     "Anaemia":             0.06,
+    "COPD":                0.05,
     "Hypothyroidism":      0.05,
     "Arrhythmia":          0.04,
     "Heart Failure":       0.03,
@@ -633,7 +634,7 @@ def generate_dataset(n_total: int = 3000, output_path: str = "dr_friend_dataset.
 
     # Save
     df.to_csv(output_path, index=False)
-    print(f"\n✅ Dataset saved: {output_path}")
+    print(f"\nDataset saved: {output_path}")
     print(f"   Shape: {df.shape}")
     print(f"   Missing values:\n{df.isnull().sum()[df.isnull().sum() > 0]}")
     print(f"\n   Disease distribution:\n{df['disease'].value_counts()}")
@@ -676,11 +677,11 @@ def validate_dataset(df: pd.DataFrame):
     print(f"Comorbidity rows: {len(label_noise_rows)} ({len(label_noise_rows)/len(df)*100:.1f}%)")
 
     if issues:
-        print("\n⚠️  Issues found:")
+        print("\n Issues found:")
         for i in issues:
             print(f"   - {i}")
     else:
-        print("\n✅ All validation checks passed.")
+        print("\nAll validation checks passed.")
 
     # Quick baseline: what accuracy would a dummy classifier get?
     majority_class_acc = df["disease"].value_counts().iloc[0] / len(df)
