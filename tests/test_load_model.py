@@ -48,7 +48,7 @@ def test_load_models():
         le = joblib.load(models_dir / "label_encoder.pkl")
         print(f"   Label Encoder loaded: {type(le).__name__}")
         print(f"   Number of classes: {len(le.classes_)}")
-        print(f"   Classes: {list(le.classes_[:5])}..." if len(le.classes_) > 5 else f"   ✅ Classes: {list(le.classes_)}")
+        print(f"   Classes: {list(le.classes_[:5])}..." if len(le.classes_) > 5 else f"   Classes: {list(le.classes_)}")
     except Exception as e:
         print(f"   Failed to load label encoder: {e}")
         return
