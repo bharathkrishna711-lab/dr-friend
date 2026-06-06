@@ -27,11 +27,30 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
         background-color: #f0f4f8;
     }
+            
+    /* Subtle dot pattern background */
+    [data-testid="stAppViewContainer"] {
+        background-image: radial-gradient(#c8d8e8 1px, transparent 1px);
+        background-size: 24px 24px;
+        background-color: #f0f4f8;
+    }
+    
+    /* Content area white card */
+    [data-testid="stAppViewContainer"] > .main .block-container {
+        background: rgba(255, 255, 255, 0.88);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+    }
+    .main .block-container {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+    }        
     
     /* Main content area */
     .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         max-width: 900px;
     }
     
@@ -64,21 +83,21 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    /* Sidebar button */
     [data-testid="stSidebar"] .stButton > button {
-        background: transparent !important;
-        border: 1px solid #334155 !important;
-        color: #94a3b8 !important;
+        background: #1e3a5f !important;
+        border: 1px solid #4d9fff !important;
+        color: #ffffff !important;
         font-size: 13px !important;
         border-radius: 8px !important;
+        font-weight: 500 !important;
         transition: all 0.2s;
     }
     
     [data-testid="stSidebar"] .stButton > button:hover {
-        border-color: #38bdf8 !important;
-        color: #38bdf8 !important;
-        background: rgba(56, 189, 248, 0.05) !important;
+        background: #4d9fff !important;
+        color: #ffffff !important;
     }
+    
     
     /* Title */
     h1 {
@@ -258,6 +277,20 @@ with st.sidebar:
         st.error("Model failed to load")
         st.caption(models.get("error", "Unknown error"))
     st.divider()
+    st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] button[kind="secondary"] {
+        background-color: #1e3a5f !important;
+        border: 1px solid #4d9fff !important;
+        color: white !important;
+    }
+    section[data-testid="stSidebar"] button[kind="secondary"]:hover {
+        background-color: #4d9fff !important;
+        border: 1px solid #4d9fff !important;
+        color: white !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     if st.button("Reset Conversation", use_container_width=True):
         for key in ["messages", "stage", "patient_data",
                     "prediction_result", "urgency_result"]:
@@ -275,23 +308,41 @@ Dr. <span style="color: #0891b2;">Friend</span>
 </h1>
 """, unsafe_allow_html=True)
 st.caption("AI-Powered Healthcare Guidance and Triage Assistant")
-st.divider()
 
 # -----------------------------------------------------------------------
 # DISEASE CATEGORY MAPPING
 # Used in results screen for broad category label and self-care advice
 # -----------------------------------------------------------------------
 DISEASE_CATEGORY = {
-    "Bronchitis": "Respiratory", "Pneumonia": "Respiratory",
-    "Asthma": "Respiratory", "COPD": "Respiratory",
-    "COVID-19": "Respiratory", "Lung Cancer": "Respiratory",
+    # Respiratory
+    "Bronchitis": "Respiratory",
+    "Pneumonia": "Respiratory",
+    "Asthma": "Respiratory",
+    "COPD": "Respiratory",
+    "COVID-19": "Respiratory",
+    "Lung Cancer": "Respiratory",
     "Tuberculosis": "Respiratory",
-    "Dengue Fever": "Infectious", "Typhoid": "Infectious",
-    "Hypothyroidism": "Metabolic", "Type 2 Diabetes": "Metabolic",
-    "Hypertensive Crisis": "Metabolic",
-    "Migraine": "Neurological", "Anxiety Attack": "Neurological",
-    "Anaemia": "Metabolic", "Arrhythmia": "Respiratory",
-    "Heart Failure": "Respiratory"
+    # Cardiac
+    "Arrhythmia": "Cardiac",
+    "Heart Failure": "Cardiac",
+    "Hypertensive Crisis": "Cardiac",
+    # Metabolic
+    "Type 2 Diabetes": "Metabolic",
+    "Hypothyroidism": "Metabolic",
+    "Anaemia": "Metabolic",
+    # Infectious
+    "Dengue Fever": "Infectious",
+    "Typhoid": "Infectious",
+    "Typhoid Fever": "Infectious",
+    "Malaria": "Infectious",
+    "Gastroenteritis": "Infectious",
+    "Food Poisoning": "Infectious",
+    "Hepatitis": "Infectious",
+    "UTI": "Infectious",
+    "Viral Infection": "Infectious",
+    # Neurological
+    "Migraine": "Neurological",
+    "Anxiety Attack": "Neurological",
 }
 
 SELF_CARE_ADVICE = {
@@ -353,8 +404,12 @@ if st.session_state.stage == "chat":
             """, unsafe_allow_html=True)
 
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        if message["role"] == "assistant":
+            with st.chat_message("assistant", avatar="🩺"):
+                st.markdown(message["content"])
+        else:
+            with st.chat_message("user"):
+                st.markdown(message["content"])
 
     if len(st.session_state.messages) == 0:
         opening = (
@@ -362,7 +417,7 @@ if st.session_state.stage == "chat":
             "what might be going on with your health. "
             "Can you tell me how you have been feeling?"
         )
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant",avatar="🩺"):
             st.markdown(opening)
         st.session_state.messages.append(
             {"role": "assistant", "content": opening}
@@ -377,6 +432,42 @@ if st.session_state.stage == "chat":
         with st.chat_message("user"):
             st.markdown(user_input)
 
+        # Emergency fast-track — detect in Python, not LLM
+        # More reliable than asking LLM to detect emergencies
+        emergency_keywords = [
+            "spo2 9", "oxygen 9", "o2 9", "saturation 9",
+            "cant breathe", "can't breathe", "cannot breathe",
+            "difficulty breathing", "not breathing",
+            "bp 18", "blood pressure 18",
+            "heart attack", "unconscious", "fainted", "passing out",
+            "chest pain"
+        ]
+        user_lower = user_input.lower()
+        is_emergency = any(keyword in user_lower for keyword in emergency_keywords)
+
+        if is_emergency and len(st.session_state.messages) >= 2:
+            emergency_reply = (
+                "These symptoms need immediate medical attention. "
+                "I have enough information to analyse your condition right away."
+            )
+            st.session_state.messages.append(
+                {"role": "assistant", "content": emergency_reply}
+            )
+            with st.chat_message("assistant"):
+                st.markdown(emergency_reply)
+
+            conversation_text = ""
+            for msg in st.session_state.messages:
+                role = "Patient" if msg["role"] == "user" else "Dr. Friend"
+                conversation_text += f"{role}: {msg['content']}\n\n"
+
+            with st.spinner("Analysing emergency symptoms..."):
+                from llm.entity_extractor import extract_patient_data
+                st.session_state.patient_data = extract_patient_data(conversation_text)
+
+            st.session_state.stage = "analysing"
+            st.rerun()
+
         with st.spinner("Dr. Friend is thinking..."):
             from llm.conversation import get_dr_friend_response, is_ready_to_analyse, clean_response
             from llm.entity_extractor import extract_patient_data
@@ -386,7 +477,7 @@ if st.session_state.stage == "chat":
         st.session_state.messages.append(
             {"role": "assistant", "content": cleaned}
         )
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar="🩺"):
             st.markdown(cleaned)
 
         if is_ready_to_analyse(response):
@@ -399,7 +490,7 @@ if st.session_state.stage == "chat":
                 st.session_state.patient_data = extract_patient_data(conversation_text)
 
             st.session_state.stage = "analysing"
-            st.rerun()
+            st.rerun()  
 
 # -----------------------------------------------------------------------
 # SCREEN 2: ANALYSING
@@ -435,6 +526,36 @@ elif st.session_state.stage == "analysing":
 # -----------------------------------------------------------------------
 elif st.session_state.stage == "results":
     prediction = st.session_state.prediction_result
+    
+    # ML transparency section
+    st.divider()
+    st.subheader("Prediction Transparency")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("**ML Model Output**")
+        st.markdown(f"Disease: **{prediction.get('ml_top_disease', prediction['top_disease'])}**")
+        st.markdown(f"Confidence: **{round(prediction.get('ml_confidence', prediction['top_confidence'])*100, 1)}%**")
+        st.markdown(f"Source: Random Forest v2.0")
+
+    with col2:
+        st.markdown("**Layer 2 Status**")
+        if prediction.get('layer2_triggered', False):
+            st.error("Activated")
+            st.markdown("Low confidence or category mismatch detected")
+        else:
+            st.success("Not triggered")
+            st.markdown("ML prediction was confident and accurate")
+
+    with col3:
+        st.markdown("**Final Decision**")
+        st.markdown(f"Disease: **{prediction['top_disease']}**")
+        st.markdown(f"Source: **{prediction.get('prediction_source', 'ml_model').replace('_', ' ').title()}**")
+        if prediction.get('reasoning'):
+            st.markdown(f"*{prediction['reasoning']}*")
+
+
     urgency = st.session_state.urgency_result
     top_disease = prediction["top_disease"]
     category = DISEASE_CATEGORY.get(top_disease, "General")

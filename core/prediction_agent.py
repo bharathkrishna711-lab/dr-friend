@@ -210,9 +210,10 @@ def predict_with_agent(patient_data: dict, model, scaler, label_encoder) -> dict
     
     # Check if Layer 2 is needed
     dominant_category = get_dominant_symptom_category(patient_data)
-    category_mismatch = is_category_mismatch(top_disease, dominant_category)
     low_confidence = top_confidence < 0.50
-    
+    # Only check category mismatch if ML is not highly confident
+    # If ML is above 70% confident, trust it regardless of category
+    category_mismatch = is_category_mismatch(top_disease, dominant_category) and top_confidence < 0.70
     trigger_layer2 = low_confidence or category_mismatch
     
     print(f"Layer 1: {top_disease} ({round(top_confidence*100, 1)}%)")

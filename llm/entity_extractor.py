@@ -3,7 +3,6 @@ llm/entity_extractor.py
 
 Extracts structured patient data from conversation text using LLM.
 
-WHY THIS IS THE HARDEST PART OF UC1:
 The LLM must return valid JSON with exact field names matching
 our predictor.py expectations. If field names are wrong or JSON
 is malformed, the prediction pipeline breaks.
@@ -81,7 +80,7 @@ def build_extraction_prompt(conversation: str) -> str:
     """
     Builds the prompt that instructs LLM to extract patient data.
     
-    WHY EXPLICIT SCHEMA IN PROMPT:
+   
     LLMs are good at understanding text but without explicit
     instructions they return inconsistent field names.
     Giving the exact schema forces consistent output every time.
@@ -102,6 +101,11 @@ STRICT RULES:
 SYMPTOM SYNONYMS - map these to the correct field:
 - "loose motion", "loose stool", "runny stool", "stomach upset" -> sym_diarrhoea = 1
 - "loose motion" also implies -> sym_abdominal_pain = 1
+- "nausea" or "feel like vomiting" alone -> sym_nausea = 1 ONLY
+- "nausea" alone without "stomach pain" -> sym_nausea = 1, sym_abdominal_pain = 0
+- "headache" alone -> sym_headache = 1 ONLY, do NOT set sym_nausea or sym_abdominal_pain
+  Do NOT set sym_abdominal_pain = 1 unless patient explicitly mentions stomach pain or tummy pain
+- "stomach pain" or "tummy pain" or "abdominal pain" -> sym_abdominal_pain = 1
 - "throwing up", "puking", "vomited" -> sym_vomiting = 1
 - "feel like vomiting", "want to vomit", "nauseous" -> sym_nausea = 1
 - "tummy pain", "stomach ache", "stomach pain", "belly pain" -> sym_abdominal_pain = 1
