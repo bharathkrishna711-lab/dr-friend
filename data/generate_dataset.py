@@ -28,7 +28,7 @@ BROAD_CATEGORIES = {
     "Respiratory":      ["Bronchitis", "Pneumonia", "Asthma", "COPD", "COVID-19"],
     "Cardiac":          ["Hypertensive Crisis", "Arrhythmia", "Heart Failure"],
     "Metabolic":        ["Type 2 Diabetes", "Hypothyroidism", "Anaemia"],
-    "Infectious":       ["Dengue Fever", "Typhoid", "Malaria"],
+    "Infectious":       ["Dengue Fever", "Typhoid", "Malaria","Gastroenteritis"],
     "Neurological":     ["Migraine", "Anxiety Attack"],
 }
 
@@ -52,11 +52,13 @@ DISEASE_WEIGHTS = {
     "Dengue Fever":        0.06,
     "Malaria":             0.06,
     "Anaemia":             0.06,
+    "Gastroenteritis":     0.05,
     "COPD":                0.05,
     "Hypothyroidism":      0.05,
-    "Arrhythmia":          0.04,
-    "Heart Failure":       0.03,
+    "Arrhythmia":          0.03,
+    "Heart Failure":       0.02,
     "Hypertensive Crisis": 0.03,
+
 }
 
 SYMPTOMS = [
@@ -433,6 +435,26 @@ DISEASE_PROFILES: Dict[str, DiseaseProfile] = {
             "weakness": 0.40, "fatigue": 0.55,
         }
     ),
+
+    "Gastroenteritis": DiseaseProfile(
+        name="Gastroenteritis",
+        temp_range=(37.8, 0.5, 37.0, 39.5),
+        hr_range=(88, 10, 65, 110),
+        sbp_range=(112, 12, 88, 140),
+        dbp_range=(72, 8, 55, 90),
+        spo2_range=(98, 0.8, 95, 100),          # normal SpO2 — not respiratory
+        rr_range=(16, 2, 12, 20),
+        glucose_range=(88, 10, 65, 110),
+        age_range=(28, 14, 5, 65),
+        duration_range=(2, 1, 1, 7),
+        symptom_probs={
+            "diarrhoea": 0.90, "nausea": 0.85, "vomiting": 0.78,
+            "abdominal_pain": 0.82, "loss_of_appetite": 0.70,
+            "fever": 0.55, "weakness": 0.60, "fatigue": 0.55,
+            "dizziness": 0.35, "headache": 0.30, "chills": 0.25,
+            "muscle_aches": 0.20,
+        }
+    ),
 }
 
 
@@ -613,8 +635,9 @@ def generate_row(disease_name: str, row_id: int) -> dict:
 # 5. MAIN GENERATION LOOP
 # ─────────────────────────────────────────────
 
-def generate_dataset(n_total: int = 3000, output_path: str = "dr_friend_dataset.csv") -> pd.DataFrame:
-    print(f"Generating {n_total} rows across {len(ALL_DISEASES)} diseases...")
+def generate_dataset(n_total: int = 3150, output_path: str = "dr_friend_dataset.csv") -> pd.DataFrame:
+    actual_total = sum(int(n_total * w) for w in DISEASE_WEIGHTS.values())
+    print(f"Generating {actual_total} rows across {len(ALL_DISEASES)} diseases...")
     print(f"Class distribution (imbalanced by design):\n")
 
     rows = []
@@ -686,7 +709,7 @@ def validate_dataset(df: pd.DataFrame):
     # Quick baseline: what accuracy would a dummy classifier get?
     majority_class_acc = df["disease"].value_counts().iloc[0] / len(df)
     print(f"\nDummy classifier baseline accuracy: {majority_class_acc:.3f}")
-    print("(Your trained model should beat this — but not by too much for a realistic dataset)")
+   
 
     # Symptom count stats
     df["symptom_count"] = df[sym_cols].sum(axis=1)

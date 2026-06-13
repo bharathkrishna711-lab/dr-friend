@@ -32,10 +32,10 @@ def load_models():
     }
 
     try:
-        # Load the Random Forest model
-        # random_forest_best.pkl is the deployment pointer file
+        # Load the XGBoost model (v3.0, 89.84% accuracy, 17 diseases)
+        # xgboost_tuned1_best.pkl is the deployment pointer file
         # If you train a better model later, just replace this file — app code stays the same
-        model_path = os.path.join(MODELS_DIR, "random_forest_best.pkl")
+        model_path = os.path.join(MODELS_DIR, "xgboost_tuned1_best.pkl")    
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model not found at: {model_path}")
         result["model"] = joblib.load(model_path)

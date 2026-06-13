@@ -299,6 +299,17 @@ def train_xgboost(X_train, y_train, X_test, y_test,
             'random_state': RANDOM_STATE
         }
         mlflow.log_params(params)
+    
+    if hasattr(X_train, 'columns'):
+        X_train = X_train.copy()
+        X_train.columns = [str(c) for c in X_train.columns]
+        print(f"Column dtype after fix: {X_train.columns.dtype}")
+        print(f"First col type: {type(X_train.columns[0])}")
+    else:
+        print("WARNING: X_train has no columns attribute")
+    if hasattr(X_test, 'columns'):
+        X_test = X_test.copy()
+        X_test.columns = [str(c) for c in X_test.columns]
 
 
     #initialize model
@@ -425,7 +436,7 @@ if __name__ == "__main__":
     
     # Try 3: Add regularization
     print("\n[3/3] Trying n=200, lr=0.05, depth=5, subsample=0.8...")
-    model_xgb_best, _ = train_xgboost(
+    model_xgb_tuned3, _ = train_xgboost(
         X_train, y_train, X_test, y_test,
         n_estimators=200,
         learning_rate=0.05,
@@ -436,49 +447,60 @@ if __name__ == "__main__":
 
 
 
-     # ========================================
-    # SAVE BEST MODEL
     # ========================================
-    
-   
+    # SELECT AND SAVE BEST MODEL
+    # ========================================
+
     print("SELECTING AND SAVING BEST MODEL")
     print("*" * 40)
 
-    # Calculate actual accuracy from the retrained model
-    rf_test_acc = round(accuracy_score(y_test, model_rf.predict(X_test)) * 100, 2)
+    # Calculate accuracies for all models
+    lr_base_acc = round(accuracy_score(y_test, model_lr_base.predict(X_test)) * 100, 2)
+    lr_tuned_acc = round(accuracy_score(y_test, model_lr_tuned.predict(X_test)) * 100, 2)
+    rf_acc = round(accuracy_score(y_test, model_rf.predict(X_test)) * 100, 2)
+    xgb_acc = round(accuracy_score(y_test, model_xgb_baseline.predict(X_test)) * 100, 2)
+
+    # Compare all models and pick best
+    model_scores = {
+    "logistic_regression_baseline": (model_lr_base, lr_base_acc),
+    "logistic_regression_tuned": (model_lr_tuned, lr_tuned_acc),
+    "random_forest": (model_rf, rf_acc),
+    "xgboost_baseline": (model_xgb_baseline, xgb_acc),
+    "xgboost_tuned1": (model_xgb_tuned1, round(accuracy_score(y_test, model_xgb_tuned1.predict(X_test)) * 100, 2)),
+    "xgboost_tuned2": (model_xgb_tuned2, round(accuracy_score(y_test, model_xgb_tuned2.predict(X_test)) * 100, 2)),
+    "xgboost_tuned3": (model_xgb_tuned3, round(accuracy_score(y_test, model_xgb_tuned3.predict(X_test)) * 100, 2)),
+}
+
+    best_name = max(model_scores, key=lambda k: model_scores[k][1])
+    best_model, best_acc = model_scores[best_name]
+
+    print(f"Best model: {best_name} ({best_acc}%)")
 
     save_model(
-        model=model_rf,
-        model_name="random_forest",
-        version="v2.0",
-        accuracy=rf_test_acc,
+        model=best_model,
+        model_name=best_name,
+        version="v3.0",
+        accuracy=best_acc,
         scaler=scaler,
         le_target=le_target
     )
 
-
-
-
-
-
-
     # ========================================
     # SUMMARY
     # ========================================
-    
-    lr_base_acc = round(accuracy_score(y_test, model_lr_base.predict(X_test)) * 100, 2)
-    lr_tuned_acc = round(accuracy_score(y_test, model_lr_tuned.predict(X_test)) * 100, 2)
-    xgb_acc = round(accuracy_score(y_test, model_xgb_baseline.predict(X_test)) * 100, 2)
 
     print("\n" + "=" * 80)
     print("TRAINING COMPLETE!")
     print("=" * 80)
-    print("\n Model Comparison:")
-    print(f"   LR Baseline:  {lr_base_acc}%")
-    print(f"   LR Tuned:     {lr_tuned_acc}%")
-    print(f"   RF:           {rf_test_acc}%  SAVED")
-    print(f"   XGBoost:      {xgb_acc}%")
-    print("\n Saved to: models/random_forest_best.pkl")
-    print("\nCheck MLflow UI: http://localhost:5000")
+    print("\nModel Comparison:")
+    print(f"   LR Baseline:      {lr_base_acc}%")
+    print(f"   LR Tuned:         {lr_tuned_acc}%")
+    print(f"   RF:               {rf_acc}%")
+    for name, (model, acc) in model_scores.items():
+        if "xgboost" in name:
+            print(f"   {name}: {acc}%")
+    print(f"\n   BEST: {best_name} — {best_acc}%  SAVED as v3.0")
+    print("\nSaved to: models/")
+    print("Check MLflow UI: http://localhost:5000")
     
     

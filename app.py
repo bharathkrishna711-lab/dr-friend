@@ -300,6 +300,9 @@ with st.sidebar:
     st.divider()
     st.caption("BITS Pilani WILP")
     st.caption("Bharath Krishna | 2024DA04347")
+    st.divider()
+    st.caption("Data: India Disease Burden (Lancet)")
+    st.caption("Protocol: NHS NEWS2 Urgency")
 
 st.markdown("""
 <h1 style="font-family: Inter, sans-serif; font-weight: 700; 
@@ -345,37 +348,37 @@ DISEASE_CATEGORY = {
     "Anxiety Attack": "Neurological",
 }
 
-SELF_CARE_ADVICE = {
-    "Respiratory": [
-        "Rest and avoid physical exertion",
-        "Drink plenty of warm fluids (water, soups, herbal tea)",
-        "Steam inhalation can ease chest tightness",
-        "Keep checking your SpO2 every few hours",
-        "If oxygen drops below 93% go to emergency immediately",
-        "Avoid cold environments and stay warm"
-    ],
-    "Infectious": [
-        "Rest and stay hydrated",
-        "Monitor your temperature every few hours",
-        "Avoid contact with others to prevent spread",
-        "Eat light, easily digestible foods",
-        "Take paracetamol for fever if needed"
-    ],
-    "Metabolic": [
-        "Monitor your blood sugar levels regularly",
-        "Stick to a low sugar, balanced diet",
-        "Stay hydrated with water",
-        "Avoid skipping meals",
-        "Keep a record of your readings to show your doctor"
-    ],
-    "Neurological": [
-        "Rest in a quiet, dark room",
-        "Stay hydrated",
-        "Avoid screen time if you have a headache",
-        "Note when symptoms started and their severity",
-        "Avoid triggers like bright lights or loud sounds"
-    ]
-}
+# SELF_CARE_ADVICE = {
+#     "Respiratory": [
+#         "Rest and avoid physical exertion",
+#         "Drink plenty of warm fluids (water, soups, herbal tea)",
+#         "Steam inhalation can ease chest tightness",
+#         "Keep checking your SpO2 every few hours",
+#         "If oxygen drops below 93% go to emergency immediately",
+#         "Avoid cold environments and stay warm"
+#     ],
+#     "Infectious": [
+#         "Rest and stay hydrated",
+#         "Monitor your temperature every few hours",
+#         "Avoid contact with others to prevent spread",
+#         "Eat light, easily digestible foods",
+#         "Take paracetamol for fever if needed"
+#     ],
+#     "Metabolic": [
+#         "Monitor your blood sugar levels regularly",
+#         "Stick to a low sugar, balanced diet",
+#         "Stay hydrated with water",
+#         "Avoid skipping meals",
+#         "Keep a record of your readings to show your doctor"
+#     ],
+#     "Neurological": [
+#         "Rest in a quiet, dark room",
+#         "Stay hydrated",
+#         "Avoid screen time if you have a headache",
+#         "Note when symptoms started and their severity",
+#         "Avoid triggers like bright lights or loud sounds"
+#     ]
+# }
 
 # -----------------------------------------------------------------------
 # SCREEN 1: CHAT
@@ -537,8 +540,9 @@ elif st.session_state.stage == "results":
         st.markdown("**ML Model Output**")
         st.markdown(f"Disease: **{prediction.get('ml_top_disease', prediction['top_disease'])}**")
         st.markdown(f"Confidence: **{round(prediction.get('ml_confidence', prediction['top_confidence'])*100, 1)}%**")
-        st.markdown(f"Source: Random Forest v2.0")
-
+        model_name = models['model_info'].get('model_name', 'XGBoost Tuned1')
+        model_version = models['model_info'].get('version', 'v3.0')
+        st.markdown(f"Source: {model_name} {model_version}")
     with col2:
         st.markdown("**Layer 2 Status**")
         if prediction.get('layer2_triggered', False):
@@ -638,8 +642,7 @@ elif st.session_state.stage == "results":
         "for professional medical advice. Always consult a qualified doctor."
     )
 
-    with st.expander("Debug: Extracted Patient Data"):
-        st.json(st.session_state.patient_data)
+   
 
     if st.button("Start New Consultation", type="primary"):
         for key in ["messages", "stage", "patient_data",

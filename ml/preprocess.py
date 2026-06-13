@@ -183,7 +183,7 @@ def scale_features(X_train, X_test):
     scaler = StandardScaler()
     
     # Get column names before scaling
-    train_columns = X_train.columns if hasattr(X_train, 'columns') else None
+    train_columns = X_train.columns.astype(str) if hasattr(X_train, 'columns') else None
     
     # Fit and transform
     X_train_scaled = scaler.fit_transform(X_train)
@@ -220,8 +220,12 @@ def apply_smote(X_train, y_train):
     print(f"\n  SMOTE applied")
     print(f"  Training samples: {len(y_train)} → {len(y_train_resampled)}")
     
+    # SMOTE returns numpy array — convert back to DataFrame to preserve column names
+    # Without this, XGBoost stores feature names as numpy Unicode (<U31) not Python str
+    if hasattr(X_train, 'columns'):
+        X_train_resampled = pd.DataFrame(X_train_resampled, columns=X_train.columns)
+    
     return X_train_resampled, y_train_resampled
-
 # ============================================================================
 # COMPLETE PIPELINE
 # ============================================================================

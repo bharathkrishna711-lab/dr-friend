@@ -144,7 +144,9 @@ def build_feature_vector(patient_data: dict) -> pd.DataFrame:
     for cat in ["low_grade_fever", "high_grade_fever"]:
         row[f"fever_category_{cat}"] = 1 if enriched["fever_category"] == cat else 0
 
-    return pd.DataFrame([row])
+    df = pd.DataFrame([row])
+    df.columns = df.columns.astype(str)
+    return df
 
 def predict_disease(patient_data: dict, model, scaler, label_encoder) -> dict:
     """
@@ -167,11 +169,12 @@ def predict_disease(patient_data: dict, model, scaler, label_encoder) -> dict:
                 feature_df[col] = 0
         feature_df = feature_df[model.feature_names_in_]
 
-    # Step 3: scale features
-    feature_scaled = scaler.transform(feature_df)
+   # Step 3: convert to numpy array before scaling
+    # XGBoost stores feature names as numpy Unicode internally (<U31)
+    # Passing numpy array bypasses feature name validation entirely
+    feature_scaled = scaler.transform(feature_df.values)
 
-    # Step 4: get probability distribution across all 15 diseases
-    # predict_proba returns shape (1, 15)
+    # Step 4: get probability distribution
     probabilities = model.predict_proba(feature_scaled)[0]
 
     # Step 5: decode class labels
