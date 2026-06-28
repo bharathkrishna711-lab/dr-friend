@@ -98,7 +98,6 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    
     /* Title */
     h1 {
         font-family: 'Inter', sans-serif !important;
@@ -115,14 +114,14 @@ st.markdown("""
         letter-spacing: 0.2px;
     }
     
-    /* Chat messages */
+    /* Chat messages — green bubbles */
     [data-testid="stChatMessage"] {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
+        background: #dcf8c6 !important;
         border-radius: 12px !important;
-        padding: 4px 8px !important;
+        padding: 8px 14px !important;
         margin-bottom: 8px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+        border: none !important;
     }
     
     /* Chat input */
@@ -576,7 +575,30 @@ elif st.session_state.stage == "results":
         st.markdown(f"**Broad Category:** {category}")
         st.markdown("**Top 5 Possibilities**")
         for disease, prob in prediction["top_5"]:
-            st.progress(prob, text=f"{disease}: {round(prob*100, 1)}%")
+            pct = round(prob * 100, 1)
+            # Bar colour: darker for higher confidence
+            if pct >= 50:
+                bar_color = "#0891b2"   # teal — high confidence
+            elif pct >= 20:
+                bar_color = "#0e7490"   # dark teal — moderate
+            else:
+                bar_color = "#94a3b8"   # grey — low confidence
+            st.markdown(f"""
+            <div style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; 
+                            margin-bottom: 3px;">
+                    <span style="font-size: 13px; font-weight: 500; 
+                                color: #1e293b;">{disease}</span>
+                    <span style="font-size: 13px; font-weight: 600; 
+                                color: {bar_color};">{pct}%</span>
+                </div>
+                <div style="background: #e2e8f0; border-radius: 6px; 
+                            height: 10px; width: 100%;">
+                    <div style="background: {bar_color}; border-radius: 6px; 
+                                height: 10px; width: {max(pct, 2)}%;"></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
     with col_right:
         st.subheader("Urgency Assessment")
