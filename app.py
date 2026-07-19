@@ -7,7 +7,7 @@ import pandas as pd
 from core.model_loader import load_models
 from core.predictor import predict_disease
 from core.urgency_engine import assess_urgency
-
+import os
 
 
 
@@ -114,7 +114,7 @@ st.markdown("""
         letter-spacing: 0.2px;
     }
     
-    /* Chat messages — green bubbles */
+    /* Chat messages */
     [data-testid="stChatMessage"] {
         background: #dcf8c6 !important;
         border-radius: 12px !important;
@@ -253,7 +253,7 @@ st.markdown("""
 models = load_models()
 
 if "stage" not in st.session_state:
-    st.session_state.stage = "chat"
+    st.session_state.stage = "entry"
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "patient_data" not in st.session_state:
@@ -262,6 +262,23 @@ if "prediction_result" not in st.session_state:
     st.session_state.prediction_result = None
 if "urgency_result" not in st.session_state:
     st.session_state.urgency_result = None
+
+# UC2-specific session state
+if "uc2_messages" not in st.session_state:
+    st.session_state.uc2_messages = []
+if "uc2_result" not in st.session_state:
+    st.session_state.uc2_result = None
+
+# UC3-specific session state
+if "uc3_result" not in st.session_state:
+    st.session_state.uc3_result = None
+
+ALL_STATE_KEYS = [
+    "messages", "stage", "patient_data",
+    "prediction_result", "urgency_result",
+    "uc2_messages", "uc2_result",
+    "uc3_result",
+]   
 
 with st.sidebar:
     st.markdown("### Dr. Friend")
@@ -291,8 +308,7 @@ with st.sidebar:
     </style>
     """, unsafe_allow_html=True)
     if st.button("Reset Conversation", use_container_width=True):
-        for key in ["messages", "stage", "patient_data",
-                    "prediction_result", "urgency_result"]:
+        for key in ALL_STATE_KEYS:
             if key in st.session_state:
                 del st.session_state[key]
         st.rerun()
@@ -347,63 +363,68 @@ DISEASE_CATEGORY = {
     "Anxiety Attack": "Neurological",
 }
 
-# SELF_CARE_ADVICE = {
-#     "Respiratory": [
-#         "Rest and avoid physical exertion",
-#         "Drink plenty of warm fluids (water, soups, herbal tea)",
-#         "Steam inhalation can ease chest tightness",
-#         "Keep checking your SpO2 every few hours",
-#         "If oxygen drops below 93% go to emergency immediately",
-#         "Avoid cold environments and stay warm"
-#     ],
-#     "Infectious": [
-#         "Rest and stay hydrated",
-#         "Monitor your temperature every few hours",
-#         "Avoid contact with others to prevent spread",
-#         "Eat light, easily digestible foods",
-#         "Take paracetamol for fever if needed"
-#     ],
-#     "Metabolic": [
-#         "Monitor your blood sugar levels regularly",
-#         "Stick to a low sugar, balanced diet",
-#         "Stay hydrated with water",
-#         "Avoid skipping meals",
-#         "Keep a record of your readings to show your doctor"
-#     ],
-#     "Neurological": [
-#         "Rest in a quiet, dark room",
-#         "Stay hydrated",
-#         "Avoid screen time if you have a headache",
-#         "Note when symptoms started and their severity",
-#         "Avoid triggers like bright lights or loud sounds"
-#     ]
-# }
+# -----------------------------------------------------------------------
+# SCREEN 0: ENTRY POINT
+# -----------------------------------------------------------------------
+if st.session_state.stage == "entry":
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+        border: 1px solid #bae6fd;
+        border-left: 4px solid #0891b2;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        font-size: 14px;
+        color: #0c4a6e;
+        font-family: Inter, sans-serif;
+    ">
+        Choose how you'd like to describe your health concern.
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("### I have vitals + symptoms")
+        st.caption("Temperature, heart rate, blood pressure, or SpO2 available")
+        if st.button("Start with Vitals", type="primary", use_container_width=True):
+            st.session_state.stage = "chat"
+            st.rerun()
+    with col2:
+        st.markdown("### I only know my symptoms")
+        st.caption("No measuring devices available - symptoms only")
+        if st.button("Start with Symptoms Only", type="primary", use_container_width=True):
+            st.session_state.stage = "uc2_chat"
+            st.rerun()
+    with col3:
+        st.markdown("### I have a lab report")
+        st.caption("Upload a PDF lab report and describe your symptoms")
+        if st.button("Upload Lab Report", type="primary", use_container_width=True):
+            st.session_state.stage = "uc3_upload"
+            st.rerun()
 
 # -----------------------------------------------------------------------
-# SCREEN 1: CHAT
+# SCREEN 1: CHAT (UC1)
 # -----------------------------------------------------------------------
-if st.session_state.stage == "chat":
-
-    # Welcome card - only shown before conversation starts
+elif st.session_state.stage == "chat":
     if len(st.session_state.messages) == 0:
-        if len(st.session_state.messages) == 0:
-            st.markdown("""
-            <div style="
-                background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
-                border: 1px solid #bae6fd;
-                border-left: 4px solid #0891b2;
-                border-radius: 10px;
-                padding: 16px 20px;
-                margin-bottom: 16px;
-                font-size: 14px;
-                color: #0c4a6e;
-                font-family: Inter, sans-serif;
-            ">
-                Dr. Friend will ask you a few questions about your symptoms and vitals. 
-                The conversation takes 2-3 minutes. 
-                Your information is used only for this session.
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 1px solid #bae6fd;
+            border-left: 4px solid #0891b2;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #0c4a6e;
+            font-family: Inter, sans-serif;
+        ">
+            Dr. Friend will ask you a few questions about your symptoms and vitals. 
+            The conversation takes 2-3 minutes. 
+            Your information is used only for this session.
+        </div>
+        """, unsafe_allow_html=True)
 
     for message in st.session_state.messages:
         if message["role"] == "assistant":
@@ -419,7 +440,7 @@ if st.session_state.stage == "chat":
             "what might be going on with your health. "
             "Can you tell me how you have been feeling?"
         )
-        with st.chat_message("assistant",avatar="🩺"):
+        with st.chat_message("assistant", avatar="🩺"):
             st.markdown(opening)
         st.session_state.messages.append(
             {"role": "assistant", "content": opening}
@@ -434,8 +455,6 @@ if st.session_state.stage == "chat":
         with st.chat_message("user"):
             st.markdown(user_input)
 
-        # Emergency fast-track — detect in Python, not LLM
-        # More reliable than asking LLM to detect emergencies
         emergency_keywords = [
             "spo2 9", "oxygen 9", "o2 9", "saturation 9",
             "cant breathe", "can't breathe", "cannot breathe",
@@ -492,10 +511,10 @@ if st.session_state.stage == "chat":
                 st.session_state.patient_data = extract_patient_data(conversation_text)
 
             st.session_state.stage = "analysing"
-            st.rerun()  
+            st.rerun()
 
 # -----------------------------------------------------------------------
-# SCREEN 2: ANALYSING
+# SCREEN 2: ANALYSING (UC1)
 # -----------------------------------------------------------------------
 elif st.session_state.stage == "analysing":
     with st.spinner("Analysing your symptoms..."):
@@ -524,12 +543,11 @@ elif st.session_state.stage == "analysing":
                 st.rerun()
 
 # -----------------------------------------------------------------------
-# SCREEN 3: RESULTS
+# SCREEN 3: RESULTS (UC1)
 # -----------------------------------------------------------------------
 elif st.session_state.stage == "results":
     prediction = st.session_state.prediction_result
-    
-    # ML transparency section
+
     st.divider()
     st.subheader("Prediction Transparency")
 
@@ -558,7 +576,6 @@ elif st.session_state.stage == "results":
         if prediction.get('reasoning'):
             st.markdown(f"*{prediction['reasoning']}*")
 
-
     urgency = st.session_state.urgency_result
     top_disease = prediction["top_disease"]
     category = DISEASE_CATEGORY.get(top_disease, "General")
@@ -576,13 +593,12 @@ elif st.session_state.stage == "results":
         st.markdown("**Top 5 Possibilities**")
         for disease, prob in prediction["top_5"]:
             pct = round(prob * 100, 1)
-            # Bar colour: darker for higher confidence
             if pct >= 50:
-                bar_color = "#0891b2"   # teal — high confidence
+                bar_color = "#0891b2"
             elif pct >= 20:
-                bar_color = "#0e7490"   # dark teal — moderate
+                bar_color = "#0e7490"
             else:
-                bar_color = "#94a3b8"   # grey — low confidence
+                bar_color = "#94a3b8"
             st.markdown(f"""
             <div style="margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; 
@@ -619,7 +635,6 @@ elif st.session_state.stage == "results":
             for rule in urgency["triggered_rules"]:
                 st.warning(rule)
 
-    # Vitals table
     st.divider()
     st.subheader("Your Vitals at a Glance")
     patient = st.session_state.patient_data
@@ -646,7 +661,6 @@ elif st.session_state.stage == "results":
         use_container_width=True
     )
 
-    # Self-care advice - personalized using LLM
     st.divider()
     st.subheader("What You Can Do Right Now")
     from llm.conversation import generate_self_care_advice
@@ -664,11 +678,330 @@ elif st.session_state.stage == "results":
         "for professional medical advice. Always consult a qualified doctor."
     )
 
-   
-
     if st.button("Start New Consultation", type="primary"):
-        for key in ["messages", "stage", "patient_data",
-                    "prediction_result", "urgency_result"]:
+        for key in ALL_STATE_KEYS:
             if key in st.session_state:
                 del st.session_state[key]
         st.rerun()
+
+    
+
+# -----------------------------------------------------------------------
+# SCREEN 4: CHAT (UC2 - Symptoms Only)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc2_chat":
+    if len(st.session_state.uc2_messages) == 0:
+        st.markdown("""
+        <div style="
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 1px solid #bae6fd;
+            border-left: 4px solid #0891b2;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #0c4a6e;
+            font-family: Inter, sans-serif;
+        ">
+            Dr. Friend will ask about your symptoms only - no vitals or
+            measuring devices needed. The conversation takes 1-2 minutes.
+        </div>
+        """, unsafe_allow_html=True)
+
+    for message in st.session_state.uc2_messages:
+        if message["role"] == "assistant":
+            with st.chat_message("assistant", avatar="🩺"):
+                st.markdown(message["content"])
+        else:
+            with st.chat_message("user"):
+                st.markdown(message["content"])
+
+    if len(st.session_state.uc2_messages) == 0:
+        opening = (
+            "Hello! I am Dr. Friend. Since you don't have vitals available, "
+            "just tell me about your symptoms and I'll ask a few follow-up "
+            "questions. What symptoms have you been experiencing?"
+        )
+        with st.chat_message("assistant", avatar="🩺"):
+            st.markdown(opening)
+        st.session_state.uc2_messages.append(
+            {"role": "assistant", "content": opening}
+        )
+
+    user_input = st.chat_input("Describe your symptoms...")
+
+    if user_input:
+        st.session_state.uc2_messages.append(
+            {"role": "user", "content": user_input}
+        )
+        with st.chat_message("user"):
+            st.markdown(user_input)
+
+        with st.spinner("Dr. Friend is thinking..."):
+            from llm.uc2_conversation import get_uc2_response, check_readiness
+            response = get_uc2_response(st.session_state.uc2_messages)
+
+        st.session_state.uc2_messages.append(
+            {"role": "assistant", "content": response}
+        )
+        with st.chat_message("assistant", avatar="🩺"):
+            st.markdown(response)
+
+        with st.spinner("Checking if I have enough information..."):
+            ready = check_readiness(st.session_state.uc2_messages)
+
+        if ready:
+            st.session_state.stage = "uc2_analysing"
+            st.rerun()
+
+# -----------------------------------------------------------------------
+# SCREEN 5: ANALYSING (UC2)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc2_analysing":
+    with st.spinner("Retrieving guidance and assessing urgency..."):
+        try:
+            from llm.uc2_conversation import run_uc2_pipeline
+            result = run_uc2_pipeline(st.session_state.uc2_messages)
+            st.session_state.uc2_result = result
+            st.session_state.stage = "uc2_results"
+            st.rerun()
+
+        except Exception as e:
+            st.error(f"UC2 analysis failed: {str(e)}")
+            st.exception(e)
+            if st.button("Go back"):
+                st.session_state.stage = "uc2_chat"
+                st.rerun()
+
+# -----------------------------------------------------------------------
+# SCREEN 6: RESULTS (UC2)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc2_results":
+    result = st.session_state.uc2_result
+
+    st.divider()
+    st.subheader("Retrieval Transparency")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("**Retrieval Method**")
+        st.markdown("Source: **RAG (LangChain + ChromaDB)**")
+        st.markdown(f"Chunks used: **{result['chunks_retrieved']}**")
+
+    with col2:
+        st.markdown("**Sources Consulted**")
+        for source in result["sources"]:
+            st.markdown(f"- {source}")
+        with st.expander("View retrieved source text"):
+            for excerpt in result["source_excerpts"]:
+                st.markdown(f"**{excerpt['citation']}** — *{excerpt['section']}*")
+                st.markdown(f"> {excerpt['text']}")
+                st.markdown("---")
+
+    with col3:
+        st.markdown("**Pathway**")
+        st.markdown("Use Case: **UC2 - Symptoms Only**")
+        st.markdown("*No vitals required or collected*")
+
+    col_left, col_right = st.columns([1, 1])
+
+    with col_left:
+        st.subheader("What Might Be Going On")
+        st.markdown("**Symptom Summary**")
+        st.markdown(f"*{result['symptom_summary']}*")
+        st.markdown("**Guidance**")
+        st.markdown(result["guidance"])
+
+    with col_right:
+        st.subheader("Urgency Assessment")
+        urgency_colors = {
+            "Self-Care at Home": "green",
+            "See a Doctor Soon": "orange",
+            "See a Doctor Today": "red",
+            "Go to Emergency": "darkred"
+        }
+        color = urgency_colors.get(result["urgency_level"], "gray")
+        st.markdown(
+            f"<h2 style='color:{color}'>{result['urgency_level']}</h2>",
+            unsafe_allow_html=True
+        )
+        st.markdown(f"*{result['urgency_reasoning']}*")
+        if result["urgency_matched_criteria"]:
+            st.markdown("**Why we flagged this:**")
+            for criterion in result["urgency_matched_criteria"]:
+                st.warning(criterion)
+        else:
+            st.info("No specific red-flag criteria matched.")
+
+    st.divider()
+    st.caption(
+        "Dr. Friend is a healthcare guidance assistant, not a replacement "
+        "for professional medical advice. Always consult a qualified doctor."
+    )
+
+    if st.button("Start New Consultation", type="primary"):
+        for key in ALL_STATE_KEYS:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.rerun() 
+
+    # -----------------------------------------------------------------------
+# SCREEN 7: UPLOAD (UC3)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc3_upload":
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+        border: 1px solid #bae6fd;
+        border-left: 4px solid #0891b2;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #0c4a6e;
+        font-family: Inter, sans-serif;
+    ">
+        Upload your lab report (PDF) and briefly describe your symptoms.
+        Dr. Friend will extract the values, flag anything abnormal, and
+        combine this with your symptoms for guidance.
+    </div>
+    """, unsafe_allow_html=True)
+
+    uploaded_file = st.file_uploader("Upload lab report (PDF)", type=["pdf"])
+    symptoms_input = st.text_area(
+        "Describe your symptoms",
+        placeholder="e.g. I've been feeling very tired and weak lately, and get dizzy when I stand up quickly",
+        height=100,
+    )
+
+    if st.button("Analyse Report", type="primary", use_container_width=True):
+        if uploaded_file is None:
+            st.error("Please upload a lab report PDF before continuing.")
+        elif not symptoms_input.strip():
+            st.error("Please describe your symptoms before continuing.")
+        else:
+            temp_path = os.path.join("data", "sample_report", "_uploaded_temp.pdf")
+            with open(temp_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+
+            st.session_state.uc3_pdf_path = temp_path
+            st.session_state.uc3_symptoms = symptoms_input.strip()
+            st.session_state.stage = "uc3_analysing"
+            st.rerun()
+
+# -----------------------------------------------------------------------
+# SCREEN 8: ANALYSING (UC3)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc3_analysing":
+    with st.spinner("Extracting values, flagging abnormal results, and retrieving guidance..."):
+        try:
+            from core.uc3_extractor import extract_structured_values
+            from core.uc3_interpreter import interpret_lab_report
+
+            structured_values = extract_structured_values(st.session_state.uc3_pdf_path)
+
+            if not structured_values:
+                st.error(
+                    "No lab values could be extracted from this PDF. It may be a "
+                    "scanned image rather than a digital PDF, which is not yet supported."
+                )
+                if st.button("Go back"):
+                    st.session_state.stage = "uc3_upload"
+                    st.rerun()
+            else:
+                result = interpret_lab_report(structured_values, st.session_state.uc3_symptoms)
+                result["all_values"] = structured_values
+                st.session_state.uc3_result = result
+                st.session_state.stage = "uc3_results"
+                st.rerun()
+
+        except Exception as e:
+            st.error(f"UC3 analysis failed: {str(e)}")
+            st.exception(e)
+            if st.button("Go back"):
+                st.session_state.stage = "uc3_upload"
+                st.rerun()
+
+# -----------------------------------------------------------------------
+# SCREEN 9: RESULTS (UC3)
+# -----------------------------------------------------------------------
+elif st.session_state.stage == "uc3_results":
+    result = st.session_state.uc3_result
+
+    st.divider()
+    st.subheader("Extracted Lab Values")
+
+    all_values_data = {
+        "Test Name": [v["test_name"] for v in result["all_values"]],
+        "Result": [v["raw_result"] for v in result["all_values"]],
+        "Reference Range": [v["raw_range"] for v in result["all_values"]],
+        "Flag": [v["computed_flag"] for v in result["all_values"]],
+    }
+    st.dataframe(pd.DataFrame(all_values_data), hide_index=True, use_container_width=True)
+
+    st.divider()
+    st.subheader("Retrieval Transparency")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("**Retrieval Method**")
+        st.markdown("Source: **RAG (LangChain + ChromaDB)**")
+        st.markdown(f"Chunks used: **{result['chunks_retrieved']}**")
+    with col2:
+        st.markdown("**Sources Consulted**")
+        if result["sources"]:
+            for source in result["sources"]:
+                st.markdown(f"- {source}")
+            with st.expander("View retrieved source text"):
+                for excerpt in result["source_excerpts"]:
+                    st.markdown(f"**{excerpt['citation']}** - *{excerpt['section']}*")
+                    st.markdown(f"> {excerpt['text']}")
+                    st.markdown("---")
+        else:
+            st.info("No matching reference documents found.")
+    with col3:
+        st.markdown("**Pathway**")
+        st.markdown("Use Case: **UC3 - Lab Report**")
+        st.markdown(f"Abnormal values found: **{len(result['abnormal_findings'])}**")
+
+    col_left, col_right = st.columns([1, 1])
+
+    with col_left:
+        st.subheader("Interpretation")
+        st.markdown(result["interpretation"])
+
+    with col_right:
+        st.subheader("Urgency Assessment")
+        urgency_colors = {
+            "Self-Care at Home": "green",
+            "See a Doctor Soon": "orange",
+            "See a Doctor Today": "red",
+            "Go to Emergency": "darkred"
+        }
+        color = urgency_colors.get(result["urgency_level"], "gray")
+        st.markdown(
+            f"<h2 style='color:{color}'>{result['urgency_level']}</h2>",
+            unsafe_allow_html=True
+        )
+        st.markdown(f"*{result['urgency_reasoning']}*")
+        if result["urgency_matched_criteria"]:
+            st.markdown("**Why we flagged this:**")
+            for criterion in result["urgency_matched_criteria"]:
+                st.warning(criterion)
+        else:
+            st.info("No specific red-flag criteria matched.")
+
+    st.divider()
+    st.caption(
+        "Dr. Friend is a healthcare guidance assistant, not a replacement "
+        "for professional medical advice. Always consult a qualified doctor."
+    )
+
+    if st.button("Start New Consultation", type="primary"):
+        for key in ALL_STATE_KEYS:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.rerun()
+
+    

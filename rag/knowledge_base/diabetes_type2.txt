@@ -1,0 +1,57 @@
+# Disease: Type 2 Diabetes
+## Category: Metabolic
+## Source: WHO Fact Sheet - Diabetes (who.int/news-room/fact-sheets/detail/diabetes)
+
+## Overview
+Type 2 diabetes is a chronic condition in which the body does not use insulin
+properly, leading to high blood glucose levels over time. It is the most
+common form of diabetes and is strongly linked to excess body weight and
+physical inactivity. In India, it is one of the most prevalent metabolic
+conditions, often developing gradually over years before diagnosis.
+
+## Common Symptoms
+- Excessive thirst (polydipsia)
+- Frequent urination (polyuria)
+- Unexplained fatigue
+- Blurred vision
+- Slow-healing wounds
+- Increased hunger despite eating normally
+- Unintended weight loss (in some cases)
+
+## Causes and Risk Factors
+- Overweight or obesity, particularly abdominal fat
+- Physical inactivity
+- Family history of diabetes
+- Age over 45
+- History of gestational diabetes
+- High blood pressure or abnormal cholesterol levels
+
+## Self-Care Guidance
+- Maintain a balanced diet low in refined sugar and processed carbohydrates
+- Engage in regular physical activity (at least 150 minutes per week)
+- Monitor blood glucose levels regularly if already diagnosed
+- Maintain a healthy body weight
+- Avoid tobacco use
+
+## When to See a Doctor
+- Persistent thirst and urination lasting more than a few days
+- Unexplained fatigue combined with blurred vision
+- Family history of diabetes with any of the above symptoms
+- Blood glucose reading above 126 mg/dL fasting, or above 200 mg/dL random
+
+## When It's an Emergency
+- Confusion, difficulty breathing, or fruity-smelling breath (signs of
+  diabetic ketoacidosis)
+- Blood glucose above 300 mg/dL with vomiting or severe dehydration
+- Loss of consciousness or seizure 
+
+## Typical Lab Findings
+- Elevated fasting blood glucose (126 mg/dL or above on repeated testing)
+- Elevated random blood glucose (200 mg/dL or above with symptoms)
+- Elevated HbA1c (6.5% or above)
+- Lipid abnormalities (elevated triglycerides, low HDL cholesterol) are
+  commonly associated
+
+## Source Citation
+World Health Organization. "Diabetes." Available at:
+who.int/news-room/fact-sheets/detail/diabetes (accessed July 2026)

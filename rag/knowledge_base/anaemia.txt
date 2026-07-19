@@ -1,0 +1,53 @@
+# Disease: Anaemia
+## Category: Metabolic
+## Source: WHO Fact Sheet - Anaemia (who.int)
+
+## Overview
+Anaemia occurs when the blood does not have enough healthy red blood
+cells or haemoglobin to carry adequate oxygen to the body's tissues. It
+is one of the most common blood disorders in India, often linked to
+nutritional deficiency, particularly iron deficiency.
+
+## Common Symptoms
+- Fatigue and weakness
+- Pale skin
+- Shortness of breath, especially with exertion
+- Dizziness or lightheadedness
+- Rapid or irregular heartbeat
+- Cold hands and feet
+- Headache
+
+## Causes and Risk Factors
+- Iron, vitamin B12, or folate deficiency
+- Chronic blood loss (heavy menstrual periods, gastrointestinal bleeding)
+- Pregnancy
+- Chronic diseases affecting red blood cell production
+- Poor dietary intake
+
+## Self-Care Guidance
+- Eat iron-rich foods (leafy greens, legumes, meat if applicable)
+- Pair iron-rich foods with vitamin C to improve absorption
+- Take iron or vitamin supplements only as advised by a doctor
+- Get adequate rest
+
+## When to See a Doctor
+- Persistent fatigue or weakness affecting daily activities
+- Noticeable pale skin or nail beds
+- Shortness of breath with mild exertion
+
+## When It's an Emergency
+- Severe shortness of breath at rest
+- Chest pain
+- Rapid heartbeat with dizziness or fainting
+- Signs of significant blood loss 
+
+## Typical Lab Findings
+- Low haemoglobin (Hb), below the normal range for age and sex
+- Low haematocrit (PCV), reflecting reduced red blood cell volume
+- Low red blood cell count (RBC) in many cases
+- Mean corpuscular volume (MCV) may be low (iron deficiency), normal, or
+  high (vitamin B12/folate deficiency) depending on the underlying cause
+
+## Source Citation
+World Health Organization. "Anaemia." Available at:
+who.int/news-room/fact-sheets/detail/anaemia (accessed July 2026)

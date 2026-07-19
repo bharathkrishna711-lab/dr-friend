@@ -1,0 +1,51 @@
+# Disease: Typhoid
+## Category: Infectious
+## Source: WHO Fact Sheet - Typhoid (who.int)
+
+## Overview
+Typhoid fever is a bacterial infection caused by Salmonella Typhi, spread
+through contaminated food and water. It is common in areas with poor
+sanitation and remains a significant health concern in parts of India,
+particularly during monsoon season.
+
+## Common Symptoms
+- Prolonged high fever, often stepwise increasing over several days
+- Headache
+- Abdominal pain and bloating
+- Loss of appetite
+- Weakness and fatigue
+- Nausea, sometimes with constipation or diarrhoea
+
+## Causes and Risk Factors
+- Consuming contaminated food or water
+- Poor sanitation and hygiene practices
+- Travel to or residence in endemic areas
+- Close contact with an infected person
+
+## Self-Care Guidance
+- Rest and stay well hydrated with clean, safe water
+- Eat easily digestible, light foods
+- Maintain strict hand hygiene to avoid spreading infection
+- Complete any prescribed antibiotic course fully
+
+## When to See a Doctor
+- Fever persisting more than 3 days without improvement
+- Severe abdominal pain
+- Persistent headache with high fever
+
+## When It's an Emergency
+- Severe abdominal pain with rigidity (possible intestinal complication)
+- Confusion or altered consciousness
+- Signs of severe dehydration
+- Blood in stool
+
+## Typical Lab Findings
+- White blood cell count often normal or low (leukopenia), unlike many
+  other bacterial infections
+- Mildly elevated liver enzymes (SGPT/ALT, SGOT/AST) are common
+- Mild anaemia may be present in prolonged illness
+- Blood culture positive for Salmonella Typhi confirms diagnosis
+
+## Source Citation
+World Health Organization. "Typhoid." Available at:
+who.int/news-room/fact-sheets/detail/typhoid (accessed July 2026)

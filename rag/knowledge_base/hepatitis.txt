@@ -1,0 +1,52 @@
+# Disease: Hepatitis
+## Category: Infectious
+## Source: WHO Fact Sheet - Hepatitis A (who.int)
+
+## Overview
+Hepatitis is inflammation of the liver, commonly caused by viral
+infection. Hepatitis A, spread through contaminated food and water, is
+common in areas with limited access to clean water and sanitation,
+including parts of India.
+
+## Common Symptoms
+- Fatigue
+- Nausea and vomiting
+- Abdominal pain, particularly upper right side
+- Loss of appetite
+- Yellowing of skin and eyes (jaundice)
+- Dark urine and pale stools
+- Mild fever
+
+## Causes and Risk Factors
+- Consuming contaminated food or water
+- Poor sanitation and hygiene
+- Close contact with an infected person
+- Travel to areas with high hepatitis prevalence
+
+## Self-Care Guidance
+- Rest and stay well hydrated
+- Avoid alcohol completely during recovery
+- Eat small, light, easily digestible meals
+- Maintain good hand hygiene to avoid spreading infection
+
+## When to See a Doctor
+- Yellowing of skin or eyes
+- Persistent nausea, vomiting, or abdominal pain
+- Dark urine or pale stools
+
+## When It's an Emergency
+- Confusion or altered mental state
+- Severe abdominal pain
+- Easy bruising or bleeding
+- Persistent vomiting preventing fluid intake
+
+## Typical Lab Findings
+- Markedly elevated liver enzymes (SGPT/ALT, SGOT/AST), often several
+  times the upper normal limit
+- Elevated bilirubin, correlating with jaundice
+- Mildly low serum albumin in some cases
+- White blood cell count usually normal
+
+## Source Citation
+World Health Organization. "Hepatitis A." Available at:
+who.int/news-room/fact-sheets/detail/hepatitis-a (accessed July 2026)

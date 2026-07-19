@@ -1,0 +1,47 @@
+# Disease: Arrhythmia
+## Category: Cardiac
+## Source: WHO Fact Sheet - Cardiovascular Diseases (who.int)
+
+## Overview
+Arrhythmia refers to an irregular heartbeat, where the heart beats too
+fast, too slow, or with an irregular rhythm. Some arrhythmias are
+harmless, while others can be serious and require prompt medical
+evaluation.
+
+## Common Symptoms
+- Palpitations (fluttering or racing heartbeat)
+- Dizziness or lightheadedness
+- Chest discomfort or pain
+- Shortness of breath
+- Fatigue
+- Swelling in the ankles or legs
+- Fainting or near-fainting episodes
+
+## Causes and Risk Factors
+- Underlying heart disease
+- High blood pressure
+- Electrolyte imbalances
+- Excessive caffeine, alcohol, or stimulant use
+- Stress
+- Thyroid disorders
+
+## Self-Care Guidance
+- Avoid excessive caffeine, alcohol, and stimulants
+- Manage stress through relaxation techniques
+- Take prescribed heart medications consistently
+- Monitor and report new or worsening symptoms promptly
+
+## When to See a Doctor
+- Noticeable palpitations lasting more than a few minutes
+- Recurring dizziness or lightheadedness
+- New swelling in the legs or ankles
+
+## When It's an Emergency
+- Chest pain with palpitations
+- Fainting or loss of consciousness
+- Severe shortness of breath
+- Very rapid or very slow heart rate with symptoms of distress
+
+## Source Citation
+World Health Organization. "Cardiovascular diseases (CVDs)." Available at:
+who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds) (accessed July 2026)

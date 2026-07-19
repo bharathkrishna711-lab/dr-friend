@@ -1,0 +1,43 @@
+# Disease: Gastroenteritis
+## Category: Infectious
+## Source: NHS - Diarrhoea and Vomiting (nhs.uk)
+
+## Overview
+Gastroenteritis is inflammation of the stomach and intestines, usually
+caused by a viral or bacterial infection, often linked to contaminated
+food or water. It is common and usually resolves on its own within a
+few days.
+
+## Common Symptoms
+- Loose motion / diarrhoea
+- Vomiting and nausea
+- Stomach pain or cramps
+- Mild fever
+- Loss of appetite
+
+## Causes and Risk Factors
+- Contaminated food or water (common with street food)
+- Viral infections (e.g., norovirus, rotavirus)
+- Bacterial infections (e.g., E. coli, Salmonella)
+- Poor hand hygiene or sanitation
+
+## Self-Care Guidance
+- Stay hydrated with oral rehydration solution or clear fluids
+- Eat light, bland foods as tolerated (rice, banana, toast)
+- Rest and avoid dairy, caffeine, and fatty foods until recovered
+- Maintain good hand hygiene to prevent spread
+
+## When to See a Doctor
+- Symptoms lasting more than 3-4 days without improvement
+- Signs of dehydration (reduced urination, dizziness, dry mouth)
+- High fever above 38.5°C
+
+## When It's an Emergency
+- Blood in vomit or stool
+- Severe abdominal pain
+- Signs of severe dehydration (confusion, very low urine output, rapid heartbeat)
+- Persistent vomiting preventing any fluid intake
+
+## Source Citation
+NHS. "Diarrhoea and vomiting." Available at:
+nhs.uk/conditions/diarrhoea-and-vomiting (accessed July 2026)

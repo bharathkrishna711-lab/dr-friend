@@ -1,0 +1,45 @@
+# Disease: UTI
+## Category: Infectious
+## Source: NHS - Urinary Tract Infections (nhs.uk)
+
+## Overview
+A urinary tract infection (UTI) is a bacterial infection affecting any
+part of the urinary system, most commonly the bladder. UTIs are common,
+especially in women, and are generally treatable, but can become serious
+if the infection spreads to the kidneys.
+
+## Common Symptoms
+- Burning sensation during urination
+- Frequent urge to urinate, often with little urine passed
+- Cloudy, strong-smelling, or bloody urine
+- Lower abdominal or pelvic discomfort
+- Mild fever in some cases
+
+## Causes and Risk Factors
+- Bacteria entering the urinary tract
+- More common in women due to anatomy
+- Sexual activity
+- Poor hydration
+- Urinary catheter use
+
+## Self-Care Guidance
+- Drink plenty of water to help flush bacteria
+- Urinate frequently and avoid holding urine for long periods
+- Maintain good personal hygiene
+- Avoid irritants like caffeine and alcohol during infection
+
+## When to See a Doctor
+- Burning sensation or frequent urination lasting more than a day
+- Blood in urine
+- Symptoms not improving with increased fluid intake
+
+## When It's an Emergency
+- Fever with chills alongside urinary symptoms (possible kidney
+  involvement)
+- Severe back or side pain
+- Nausea and vomiting with urinary symptoms
+- Confusion, particularly in older adults
+
+## Source Citation
+NHS. "Urinary tract infections (UTIs)." Available at:
+nhs.uk/conditions/urinary-tract-infections-utis (accessed July 2026)

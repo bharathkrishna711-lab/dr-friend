@@ -1,0 +1,46 @@
+# Disease: COPD
+## Category: Respiratory
+## Source: WHO Fact Sheet - Chronic Obstructive Pulmonary Disease (who.int)
+
+## Overview
+Chronic Obstructive Pulmonary Disease (COPD) is a long-term lung
+condition that causes airflow blockage and breathing difficulties. It
+is progressive and most commonly caused by long-term exposure to
+irritants such as tobacco smoke.
+
+## Common Symptoms
+- Persistent cough, often with mucus
+- Shortness of breath, especially during physical activity
+- Wheezing
+- Chest tightness
+- Frequent respiratory infections
+- Fatigue
+
+## Causes and Risk Factors
+- Long-term smoking (primary cause)
+- Long-term exposure to air pollution or occupational dust/chemicals
+- Genetic factors (rare)
+- Age (more common over 40)
+
+## Self-Care Guidance
+- Avoid smoking and secondhand smoke completely
+- Use prescribed inhalers or medications as directed
+- Practice breathing exercises as advised by a doctor
+- Stay physically active within tolerable limits
+- Get vaccinated against flu and pneumonia if advised
+
+## When to See a Doctor
+- Increasing shortness of breath with daily activities
+- Cough lasting more than a few weeks
+- Frequent chest infections
+
+## When It's an Emergency
+- Severe difficulty breathing at rest
+- Bluish tint to lips or fingernails
+- Confusion or extreme drowsiness
+- Rapid heartbeat with breathing difficulty
+
+## Source Citation
+World Health Organization. "Chronic obstructive pulmonary disease (COPD)."
+Available at: who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)
+(accessed July 2026)

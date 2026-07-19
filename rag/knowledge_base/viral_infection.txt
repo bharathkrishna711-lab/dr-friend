@@ -1,0 +1,45 @@
+# Disease: Viral Infection
+## Category: Respiratory
+## Source: NHS - Common Cold and Flu (nhs.uk)
+
+## Overview
+A general viral infection (such as the common cold or influenza) affects
+the upper respiratory tract and is one of the most frequent reasons
+people seek healthcare guidance. Most cases are mild and resolve on
+their own within a week to ten days.
+
+## Common Symptoms
+- Runny or blocked nose
+- Sore throat
+- Mild cough
+- Sneezing
+- Mild fever
+- Body aches and fatigue
+- Headache
+
+## Causes and Risk Factors
+- Viral transmission through respiratory droplets or contact
+- Close contact with an infected person
+- Weakened immune system
+- Seasonal changes, particularly monsoon and winter
+
+## Self-Care Guidance
+- Rest and stay well hydrated
+- Use steam inhalation or saline nasal rinses for congestion
+- Warm fluids and honey for sore throat relief
+- Over-the-counter fever/pain relief as needed
+
+## When to See a Doctor
+- Symptoms lasting more than 10 days without improvement
+- Fever above 38.5°C persisting more than 3 days
+- Symptoms significantly worsening after initial improvement
+
+## When It's an Emergency
+- Difficulty breathing
+- Chest pain
+- Confusion or severe drowsiness
+- High fever unresponsive to medication
+
+## Source Citation
+NHS. "Common cold." Available at:
+nhs.uk/conditions/common-cold (accessed July 2026)

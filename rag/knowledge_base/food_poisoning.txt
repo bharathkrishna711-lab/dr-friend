@@ -1,0 +1,46 @@
+# Disease: Food Poisoning
+## Category: Infectious
+## Source: NHS - Food Poisoning (nhs.uk)
+
+## Overview
+Food poisoning is illness caused by consuming contaminated food or
+drink, typically from bacteria, viruses, or toxins. Symptoms usually
+appear within hours to a couple of days of eating the affected food and
+resolve on their own within a few days.
+
+## Common Symptoms
+- Nausea and vomiting
+- Diarrhoea
+- Stomach cramps
+- Mild fever
+- Feeling generally unwell
+- Loss of appetite
+
+## Causes and Risk Factors
+- Undercooked or improperly stored food
+- Contaminated water
+- Poor food handling hygiene
+- Eating food from unreliable street vendors
+- Consuming expired or spoiled food
+
+## Self-Care Guidance
+- Stay hydrated with oral rehydration solution or clear fluids
+- Rest and avoid solid food until nausea subsides, then eat light meals
+- Avoid dairy, caffeine, alcohol, and fatty foods until fully recovered
+- Practice good hand hygiene to prevent spreading illness
+
+## When to See a Doctor
+- Symptoms lasting more than 2-3 days
+- Signs of dehydration (reduced urination, dizziness, dry mouth)
+- High fever above 38.5°C
+
+## When It's an Emergency
+- Blood in vomit or stool
+- Severe abdominal pain
+- Signs of severe dehydration (confusion, very low urine output,
+  rapid heartbeat)
+- Persistent vomiting preventing any fluid intake
+
+## Source Citation
+NHS. "Food poisoning." Available at:
+nhs.uk/conditions/food-poisoning (accessed July 2026)

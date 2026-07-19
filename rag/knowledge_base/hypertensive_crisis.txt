@@ -1,0 +1,45 @@
+# Disease: Hypertensive Crisis
+## Category: Cardiac
+## Source: WHO Fact Sheet - Cardiovascular Diseases (who.int)
+
+## Overview
+A hypertensive crisis is a severe, sudden increase in blood pressure
+that can lead to organ damage if not treated promptly. It is considered
+a serious cardiac event requiring urgent medical attention.
+
+## Common Symptoms
+- Severe headache
+- Blurred or impaired vision
+- Chest pain
+- Shortness of breath
+- Nosebleed
+- Severe anxiety or confusion
+- Nausea and vomiting
+
+## Causes and Risk Factors
+- Uncontrolled or untreated high blood pressure
+- Missed doses of blood pressure medication
+- Kidney disease
+- Stress or significant physical exertion
+- Certain medications or substances
+
+## Self-Care Guidance
+- Take prescribed blood pressure medication consistently
+- Monitor blood pressure regularly if previously diagnosed with
+  hypertension
+- Reduce sodium intake and maintain a heart-healthy diet
+- Avoid sudden intense physical exertion if hypertensive
+
+## When to See a Doctor
+- Blood pressure readings significantly above your normal baseline
+- Recurring headaches with high blood pressure history
+
+## When It's an Emergency
+- Severe headache with blurred vision
+- Chest pain or shortness of breath with high blood pressure
+- Confusion, difficulty speaking, or weakness on one side
+- Blood pressure reading at or above 180/120 mmHg with any symptoms
+
+## Source Citation
+World Health Organization. "Cardiovascular diseases (CVDs)." Available at:
+who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds) (accessed July 2026)

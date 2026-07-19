@@ -174,7 +174,7 @@ def predict_disease(patient_data: dict, model, scaler, label_encoder) -> dict:
     # Passing numpy array bypasses feature name validation entirely
     feature_scaled = scaler.transform(feature_df.values)
 
-    # Step 4: get probability distribution
+    # Step 4: get probability distributions
     probabilities = model.predict_proba(feature_scaled)[0]
 
     # Step 5: decode class labels

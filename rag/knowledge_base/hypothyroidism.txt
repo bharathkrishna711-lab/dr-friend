@@ -1,0 +1,48 @@
+# Disease: Hypothyroidism
+## Category: Metabolic
+## Source: NHS - Underactive Thyroid (nhs.uk)
+
+## Overview
+Hypothyroidism occurs when the thyroid gland does not produce enough
+thyroid hormone, slowing down the body's metabolism. It develops
+gradually and symptoms can be subtle at first, often mistaken for
+general tiredness or aging.
+
+## Common Symptoms
+- Fatigue and low energy
+- Unexplained weight gain
+- Feeling cold when others are comfortable
+- Dry skin and hair
+- Constipation
+- Muscle weakness or aches
+- Depressed mood
+- Slow heart rate
+
+## Causes and Risk Factors
+- Autoimmune thyroid disease (most common cause)
+- Iodine deficiency
+- Previous thyroid surgery or radiation treatment
+- Certain medications
+- Family history of thyroid disease
+- More common in women and with increasing age
+
+## Self-Care Guidance
+- Take prescribed thyroid medication consistently, as directed
+- Maintain a balanced diet with adequate iodine
+- Get regular thyroid function monitoring if diagnosed
+- Manage weight through diet and appropriate activity
+
+## When to See a Doctor
+- Persistent fatigue, weight gain, or cold intolerance
+- Symptoms affecting daily functioning
+- Family history of thyroid disease with any symptoms
+
+## When It's an Emergency
+- Severe confusion or loss of consciousness (may indicate myxedema
+  coma, a rare but serious complication)
+- Very slow heart rate with fainting
+- Difficulty breathing
+
+## Source Citation
+NHS. "Underactive thyroid (hypothyroidism)." Available at:
+nhs.uk/conditions/underactive-thyroid-hypothyroidism (accessed July 2026)

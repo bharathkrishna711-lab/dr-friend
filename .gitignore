@@ -41,3 +41,4 @@ data/*.pdf
 
 # Ollama models
 *.gguf
+data/sample_report/_uploaded_temp.pdf

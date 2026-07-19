@@ -1,0 +1,47 @@
+# Disease: Bronchitis
+## Category: Respiratory
+## Source: NHS - Bronchitis (nhs.uk)
+
+## Overview
+Bronchitis is inflammation of the bronchial tubes that carry air to the
+lungs, usually caused by a viral infection. It commonly follows a cold or
+flu and typically resolves within a few weeks, though the cough can
+persist longer.
+
+## Common Symptoms
+- Persistent cough, often producing mucus (clear, white, yellow, or green)
+- Chest tightness or mild discomfort
+- Mild fever and chills
+- Fatigue
+- Sore throat
+- Wheezing
+
+## Causes and Risk Factors
+- Viral infections (most common cause)
+- Smoking or exposure to secondhand smoke
+- Air pollution or dust exposure
+- Weakened immune system
+- Recent respiratory infection
+
+## Self-Care Guidance
+- Rest and stay well hydrated
+- Use a humidifier or steam inhalation to ease congestion
+- Avoid smoking and irritants
+- Use honey and warm fluids to soothe throat irritation
+- Over-the-counter pain relief for fever and discomfort
+
+## When to See a Doctor
+- Cough lasting more than 3 weeks
+- Fever above 38°C persisting more than 3 days
+- Coughing up blood or thick discolored mucus
+- Wheezing that worsens
+
+## When It's an Emergency
+- Severe difficulty breathing
+- Chest pain with breathing difficulty
+- Bluish tint to lips or face
+- High fever with confusion
+
+## Source Citation
+NHS. "Bronchitis." Available at:
+nhs.uk/conditions/bronchitis (accessed July 2026)

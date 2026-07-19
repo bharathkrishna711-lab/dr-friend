@@ -1,0 +1,47 @@
+# Disease: Anxiety Attack
+## Category: Neurological
+## Source: NHS - Generalised Anxiety Disorder (nhs.uk)
+
+## Overview
+An anxiety attack (often linked to panic disorder or generalised anxiety)
+is a sudden episode of intense fear or worry accompanied by physical
+symptoms. Episodes can feel alarming but are not typically physically
+dangerous, though symptoms can closely mimic cardiac conditions.
+
+## Common Symptoms
+- Rapid heartbeat or palpitations
+- Chest tightness or discomfort
+- Shortness of breath or feeling smothered
+- Sweating, trembling, or shaking
+- Dizziness or lightheadedness
+- Feeling of impending doom or loss of control
+- Nausea or stomach discomfort
+
+## Causes and Risk Factors
+- History of anxiety disorders
+- High stress or major life changes
+- Family history of anxiety
+- Excessive caffeine or stimulant use
+- Sleep deprivation
+
+## Self-Care Guidance
+- Practice slow, deep breathing techniques
+- Ground yourself using sensory awareness (5 senses technique)
+- Reduce caffeine and stimulant intake
+- Maintain regular sleep and exercise routines
+- Consider mindfulness or relaxation practices
+
+## When to See a Doctor
+- Frequent or recurring anxiety attacks
+- Symptoms interfering with daily life or work
+- Difficulty controlling worry most days
+
+## When It's an Emergency
+- Chest pain that is severe, crushing, or radiating to the arm/jaw
+  (cannot be safely assumed to be anxiety without medical evaluation)
+- Fainting or loss of consciousness
+- Severe difficulty breathing not improving with calming techniques
+
+## Source Citation
+NHS. "Generalised anxiety disorder in adults." Available at:
+nhs.uk/mental-health/conditions/generalised-anxiety-disorder (accessed July 2026)

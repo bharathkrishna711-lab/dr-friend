@@ -1,0 +1,45 @@
+# Disease: Asthma
+## Category: Respiratory
+## Source: WHO Fact Sheet - Asthma (who.int)
+
+## Overview
+Asthma is a chronic condition affecting the airways in the lungs, causing
+them to narrow, swell, and produce extra mucus. This makes breathing
+difficult and can trigger coughing, wheezing, and shortness of breath.
+Symptoms often come in episodes ("attacks") rather than being constant.
+
+## Common Symptoms
+- Shortness of breath
+- Wheezing (a whistling sound when breathing)
+- Chest tightness
+- Coughing, especially at night or early morning
+- Symptoms triggered or worsened by exercise, cold air, or allergens
+
+## Causes and Risk Factors
+- Family history of asthma or allergies
+- Exposure to allergens (dust, pollen, pet dander)
+- Respiratory infections, especially in childhood
+- Air pollution and occupational irritants
+- Obesity
+
+## Self-Care Guidance
+- Use prescribed inhalers as directed
+- Identify and avoid personal triggers
+- Monitor symptoms and peak flow if advised by a doctor
+- Maintain a smoke-free environment
+- Keep rescue medication accessible at all times
+
+## When to See a Doctor
+- Symptoms occurring more than twice a week
+- Needing rescue inhaler frequently
+- Symptoms interfering with sleep or daily activities
+
+## When It's an Emergency
+- Severe shortness of breath not relieved by inhaler
+- Difficulty speaking full sentences due to breathlessness
+- Bluish tint to lips or fingernails
+- Rapid worsening of symptoms despite medication
+
+## Source Citation
+World Health Organization. "Asthma." Available at:
+who.int/news-room/fact-sheets/detail/asthma (accessed July 2026)

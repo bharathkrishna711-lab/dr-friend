@@ -1,0 +1,54 @@
+# Disease: Dengue Fever
+## Category: Infectious
+## Source: WHO Fact Sheet - Dengue and Severe Dengue (who.int)
+
+## Overview
+Dengue is a mosquito-borne viral infection transmitted primarily by the
+Aedes aegypti mosquito. It is common in tropical and subtropical regions,
+including much of India, particularly during and after monsoon season when
+stagnant water increases mosquito breeding.
+
+## Common Symptoms
+- Sudden high fever
+- Severe headache, often behind the eyes
+- Muscle and joint pain
+- Nausea and vomiting
+- Skin rash
+- Mild bleeding (nose or gums) in some cases
+
+## Causes and Risk Factors
+- Bite from an infected Aedes mosquito
+- Living in or traveling to areas with standing water and high mosquito density
+- Previous dengue infection (increases risk of severe dengue on reinfection)
+
+## Self-Care Guidance
+- Rest and stay well hydrated with water or oral rehydration solution
+- Use paracetamol for fever and pain (avoid aspirin or ibuprofen, which
+  increase bleeding risk)
+- Monitor temperature and symptoms closely for the first week
+- Use mosquito nets/repellent to prevent further bites during illness
+
+## When to See a Doctor 
+- Fever lasting more than 2 days without improvement
+- Persistent vomiting or inability to keep fluids down
+- Severe abdominal pain
+
+## When It's an Emergency
+- Bleeding from gums, nose, or in vomit/stool
+- Difficulty breathing or severe restlessness
+- Cold, clammy skin or rapid weak pulse (signs of shock)
+- Sudden drop in temperature after high fever combined with any of the above
+
+## Typical Lab Findings
+- Low platelet count (thrombocytopenia) -- often the most notable and
+  earliest abnormal finding
+- Elevated haematocrit (haemoconcentration), particularly as illness
+  progresses or plasma leaks in more severe cases
+- Low white blood cell count (leukopenia), especially in the first few
+  days of illness
+- Mildly to moderately elevated liver enzymes (SGPT/ALT, SGOT/AST) are
+  common findings
+
+## Source Citation
+World Health Organization. "Dengue and severe dengue." Available at:
+who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue (accessed July 2026)

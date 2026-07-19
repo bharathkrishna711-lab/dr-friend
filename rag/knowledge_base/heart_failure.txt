@@ -1,0 +1,45 @@
+# Disease: Heart Failure
+## Category: Cardiac
+## Source: WHO Fact Sheet - Cardiovascular Diseases (who.int)
+
+## Overview
+Heart failure occurs when the heart cannot pump blood efficiently enough
+to meet the body's needs. It is a serious, often chronic condition that
+requires ongoing medical management, and any escalation of symptoms
+should be treated with high caution.
+
+## Common Symptoms
+- Shortness of breath, especially when lying down or with exertion
+- Swelling in the legs, ankles, or abdomen
+- Persistent fatigue and weakness
+- Rapid or irregular heartbeat
+- Persistent cough or wheezing, sometimes with white or pink phlegm
+- Sudden weight gain from fluid retention
+
+## Causes and Risk Factors
+- Coronary artery disease
+- High blood pressure (long-term, uncontrolled)
+- Prior heart attack
+- Diabetes
+- Arrhythmias
+
+## Self-Care Guidance
+- Monitor daily weight for sudden fluid retention
+- Limit salt and fluid intake as advised by a doctor
+- Take prescribed heart medications consistently
+- Avoid excessive physical exertion beyond medical advice
+
+## When to See a Doctor
+- Increasing shortness of breath with usual activities
+- New or worsening swelling in legs or abdomen
+- Sudden unexplained weight gain
+
+## When It's an Emergency
+- Severe shortness of breath at rest
+- Chest pain
+- Coughing up pink, frothy phlegm
+- Fainting or severe dizziness
+
+## Source Citation
+World Health Organization. "Cardiovascular diseases (CVDs)." Available at:
+who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds) (accessed July 2026)

@@ -1,0 +1,45 @@
+# Disease: Pneumonia
+## Category: Respiratory
+## Source: WHO Fact Sheet - Pneumonia (who.int)
+
+## Overview
+Pneumonia is an infection that inflames the air sacs in one or both lungs,
+which may fill with fluid. It can be caused by bacteria, viruses, or fungi,
+and ranges from mild to life-threatening, particularly in children, the
+elderly, and those with weakened immune systems.
+
+## Common Symptoms
+- Cough, often with phlegm (yellow, green, or blood-tinged)
+- Fever, sweating, and chills
+- Shortness of breath
+- Chest pain that worsens with breathing or coughing
+- Fatigue and weakness
+
+## Causes and Risk Factors
+- Bacterial infection (e.g., Streptococcus pneumoniae)
+- Viral infection (including influenza, COVID-19)
+- Smoking or chronic lung disease
+- Weakened immune system
+- Recent respiratory infection that has worsened
+
+## Self-Care Guidance
+- Rest and stay well hydrated
+- Use fever-reducing medication as needed
+- Avoid smoking and secondhand smoke exposure
+- Complete any prescribed antibiotic course fully, if bacterial
+
+## When to See a Doctor
+- Fever above 38.5°C persisting more than 2 days
+- Productive cough with fever lasting more than a few days
+- Chest discomfort with breathing
+
+## When It's an Emergency
+- Difficulty breathing or rapid breathing
+- Oxygen saturation (SpO2) below 93%
+- Bluish tint to lips or face
+- Confusion or severe drowsiness
+- Chest pain with shortness of breath
+
+## Source Citation
+World Health Organization. "Pneumonia." Available at:
+who.int/news-room/fact-sheets/detail/pneumonia (accessed July 2026)

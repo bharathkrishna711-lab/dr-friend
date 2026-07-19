@@ -1,0 +1,45 @@
+# Disease: Tuberculosis
+## Category: Respiratory
+## Source: WHO Fact Sheet - Tuberculosis (who.int)
+
+## Overview
+Tuberculosis (TB) is a bacterial infection caused by Mycobacterium
+tuberculosis, most commonly affecting the lungs. It spreads through the
+air when an infected person coughs or sneezes. India carries one of the
+highest TB burdens globally, making early recognition important.
+
+## Common Symptoms
+- Persistent cough lasting more than 2-3 weeks, sometimes with blood
+- Chest pain
+- Unintentional weight loss
+- Night sweats
+- Fever, often low-grade and prolonged
+- Fatigue and loss of appetite
+
+## Causes and Risk Factors
+- Close contact with someone with active TB
+- Weakened immune system (HIV, diabetes, malnutrition)
+- Living in crowded or poorly ventilated conditions
+- Previous TB infection
+
+## Self-Care Guidance
+- Complete the full prescribed course of TB medication, even after
+  feeling better -- incomplete treatment leads to drug resistance
+- Cover mouth when coughing and maintain good ventilation
+- Maintain adequate nutrition to support recovery
+- Attend all follow-up appointments for monitoring
+
+## When to See a Doctor
+- Cough lasting more than 2-3 weeks
+- Unexplained weight loss with prolonged low-grade fever
+- Coughing up blood
+
+## When It's an Emergency
+- Coughing up significant amounts of blood
+- Severe difficulty breathing
+- High fever with confusion
+- Severe chest pain
+
+## Source Citation
+World Health Organization. "Tuberculosis." Available at:
+who.int/news-room/fact-sheets/detail/tuberculosis (accessed July 2026)

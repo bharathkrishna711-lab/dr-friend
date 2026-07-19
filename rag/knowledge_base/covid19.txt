@@ -1,0 +1,48 @@
+# Disease: COVID-19
+## Category: Respiratory
+## Source: WHO Fact Sheet - Coronavirus Disease (COVID-19) (who.int)
+
+## Overview
+COVID-19 is a respiratory illness caused by the SARS-CoV-2 virus. Severity
+ranges from mild, cold-like symptoms to severe respiratory illness,
+particularly in older adults or those with underlying conditions.
+
+## Common Symptoms
+- Fever or chills
+- Cough, often dry
+- Fatigue
+- Sore throat
+- Loss of taste or smell
+- Body aches
+- Headache
+- Shortness of breath in more severe cases
+
+## Causes and Risk Factors
+- Exposure to an infected person (respiratory droplets, close contact)
+- Older age
+- Underlying conditions (diabetes, heart disease, lung disease)
+- Weakened immune system
+- Unvaccinated status
+
+## Self-Care Guidance
+- Isolate to prevent spreading infection to others
+- Rest and stay well hydrated
+- Use fever-reducing medication as needed
+- Monitor oxygen levels if a device is available
+- Maintain good ventilation in living spaces
+
+## When to See a Doctor
+- Fever persisting more than 3 days
+- Symptoms not improving after a week
+- Underlying health conditions with any COVID symptoms
+
+## When It's an Emergency
+- Difficulty breathing or shortness of breath at rest
+- Persistent chest pain or pressure
+- Confusion or inability to stay awake
+- Bluish lips or face
+- Oxygen saturation (SpO2) below 93%
+
+## Source Citation
+World Health Organization. "Coronavirus disease (COVID-19)." Available at:
+who.int/news-room/fact-sheets/detail/coronavirus-disease-(covid-19) (accessed July 2026)

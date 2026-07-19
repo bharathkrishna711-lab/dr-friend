@@ -1,0 +1,45 @@
+# Disease: Migraine
+## Category: Neurological
+## Source: WHO Fact Sheet - Headache Disorders (who.int)
+
+## Overview
+Migraine is a neurological condition causing recurrent, often severe
+headaches, typically on one side of the head. It is one of the most common
+neurological disorders worldwide and can significantly affect daily
+functioning during episodes.
+
+## Common Symptoms
+- Throbbing or pulsing headache, often one-sided
+- Sensitivity to light (photophobia) and sound (phonophobia)
+- Nausea, sometimes with vomiting
+- Visual disturbances (aura) in some cases before headache onset
+- Worsening of pain with physical activity
+
+## Causes and Risk Factors
+- Family history of migraine
+- Hormonal changes (more common in women)
+- Stress, poor sleep, or irregular meals
+- Certain foods, caffeine, or alcohol as triggers
+- Bright lights or strong smells
+
+## Self-Care Guidance
+- Rest in a quiet, dark room during an attack
+- Stay hydrated and maintain regular meal times
+- Identify and avoid personal triggers where possible
+- Over-the-counter pain relief (paracetamol/ibuprofen) for mild episodes
+- Maintain a consistent sleep schedule
+
+## When to See a Doctor
+- Migraines occurring more than a few times a month
+- Symptoms not responding to usual self-care measures
+- Migraine significantly interfering with work or daily life
+
+## When It's an Emergency
+- Sudden, "worst headache of your life" (may indicate a different condition)
+- Headache with confusion, slurred speech, or weakness on one side
+- Headache following a head injury
+- Headache with stiff neck and fever (possible meningitis)
+
+## Source Citation
+World Health Organization. "Headache disorders." Available at:
+who.int/news-room/fact-sheets/detail/headache-disorders (accessed July 2026)

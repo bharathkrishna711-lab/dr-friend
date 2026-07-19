@@ -1,0 +1,52 @@
+# Disease: Malaria
+## Category: Infectious
+## Source: WHO Fact Sheet - Malaria (who.int)
+
+## Overview
+Malaria is a life-threatening disease caused by parasites transmitted
+through the bites of infected Anopheles mosquitoes. It is preventable
+and curable but can progress rapidly to severe illness if untreated,
+particularly in high-risk groups.
+
+## Common Symptoms
+- Fever, often with chills and sweating
+- Headache
+- Fatigue
+- Muscle aches
+- Nausea and vomiting
+- Symptoms often cyclical (fever spikes at intervals)
+
+## Causes and Risk Factors
+- Bite from an infected Anopheles mosquito
+- Living in or traveling to malaria-endemic areas
+- Young children, pregnant women, and those with weakened immunity
+  are at higher risk of severe illness
+
+## Self-Care Guidance
+- Seek prompt testing if malaria is suspected, especially in endemic areas
+- Rest and stay well hydrated
+- Use mosquito nets and repellents to prevent further exposure
+- Take antimalarial medication exactly as prescribed if diagnosed
+
+## When to See a Doctor
+- Any fever with chills in a malaria-endemic area, especially after
+  recent travel
+- Symptoms not improving within 24-48 hours
+
+## When It's an Emergency
+- Confusion, seizures, or difficulty waking
+- Difficulty breathing
+- Dark or reduced urine output
+- Severe weakness or inability to sit up
+- Repeated vomiting preventing oral medication
+
+## Typical Lab Findings
+- Low platelet count (thrombocytopenia) is common
+- Low haemoglobin (anaemia) may develop, especially with repeated or
+  severe infection
+- Elevated liver enzymes (SGPT/ALT, SGOT/AST) in some cases
+- Parasite visible on peripheral blood smear confirms diagnosis
+
+## Source Citation
+World Health Organization. "Malaria." Available at:
+who.int/news-room/fact-sheets/detail/malaria (accessed July 2026)

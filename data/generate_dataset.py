@@ -36,7 +36,7 @@ DISEASE_TO_CATEGORY = {
     d: cat for cat, diseases in BROAD_CATEGORIES.items() for d in diseases
 }
 
-ALL_DISEASES = list(DISEASE_TO_CATEGORY.keys())  # 15 diseases
+ALL_DISEASES = list(DISEASE_TO_CATEGORY.keys())  # 17 diseases
 
 # Realistic class distribution — imbalanced like real population
 # Common conditions more frequent than rare ones
@@ -235,7 +235,7 @@ DISEASE_PROFILES: Dict[str, DiseaseProfile] = {
     "Arrhythmia": DiseaseProfile(
         name="Arrhythmia",
         temp_range=(36.8, 0.3, 36.2, 37.5),
-        hr_range=(108, 25, 40, 180),     # wide range — both brady and tachy
+        hr_range=(108, 25, 40, 180),     
         sbp_range=(118, 16, 88, 158),
         dbp_range=(76, 10, 55, 98),
         spo2_range=(96, 1.5, 90, 99),
