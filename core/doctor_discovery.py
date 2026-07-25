@@ -139,6 +139,93 @@ def find_nearby_doctors(disease_name: str, location: str, max_results: int = 5) 
         "error": None,
     }
 
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", GOOGLE_PLACES_API_KEY)
+# WHY A SEPARATE ENV VAR NAME WITH FALLBACK: Distance Matrix and Maps
+# Embed are typically enabled on the same Google Cloud project/key as
+# Places, so the existing GOOGLE_PLACES_API_KEY usually works directly.
+# A distinct GOOGLE_MAPS_API_KEY is supported in case the key is ever
+# split or restricted differently in future.
+
+
+def get_distances(origin: str, destinations: list) -> dict:
+    """
+    Batch lookup: given one origin (free-text location string, same as
+    what the user already typed for find_nearby_doctors()) and a list
+    of destination address strings, returns drive time + distance for
+    each destination in a SINGLE API call (Distance Matrix supports
+    multiple destinations per request, avoiding one call per doctor).
+
+    Returns a dict keyed by destination address, each value a dict with
+    "duration_text" (e.g. "12 mins") and "distance_text" (e.g. "4.1 km"),
+    or None for a destination if that specific lookup failed (e.g.
+    address couldn't be geocoded) -- callers should handle missing
+    entries gracefully rather than assuming every destination succeeds.
+
+    WHY TEXT ADDRESSES, NOT LAT/LNG:
+    Consistent with find_nearby_doctors()'s existing design decision
+    (Text Search over Nearby Search) -- avoids needing browser
+    geolocation. Google's Distance Matrix API accepts free-text origins
+    and destinations directly and geocodes them internally. This means
+    the origin resolves to the approximate center of the named area
+    (e.g. "Bandra, Mumbai"), not the user's precise GPS position -- a
+    known, documented trade-off, same as the existing location text
+    field already implies for Places search.
+    """
+    if not GOOGLE_MAPS_API_KEY or not destinations:
+        return {}
+
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+    params = {
+        "origins": origin,
+        "destinations": "|".join(destinations),
+        "key": GOOGLE_MAPS_API_KEY,
+    }
+
+    try:
+        response = requests.get(url, params=params, timeout=10)
+        data = response.json()
+    except requests.RequestException:
+        return {}
+
+    if data.get("status") != "OK":
+        return {}
+
+    results = {}
+    rows = data.get("rows", [])
+    if not rows:
+        return {}
+
+    elements = rows[0].get("elements", [])
+    for dest, element in zip(destinations, elements):
+        if element.get("status") == "OK":
+            results[dest] = {
+                "duration_text": element["duration"]["text"],
+                "distance_text": element["distance"]["text"],
+            }
+        else:
+            results[dest] = None
+
+    return results
+
+
+def get_embed_map_url(origin: str, destination: str) -> str:
+    """
+    Builds a Google Maps Embed API URL showing driving directions from
+    origin to destination, for use in an iframe. Maps Embed API has no
+    per-load charge, unlike most other Google Maps Platform APIs.
+
+    URL-encodes both origin and destination (via urllib.parse.quote)
+    since real addresses commonly contain spaces, commas, and other
+    characters that are invalid in a raw URL and were causing Google
+    to reject the request as malformed.
+    """
+    if not GOOGLE_MAPS_API_KEY:
+        return ""
+    from urllib.parse import quote
+    base = "https://www.google.com/maps/embed/v1/directions"
+    params = f"?key={GOOGLE_MAPS_API_KEY}&origin={quote(origin)}&destination={quote(destination)}"
+    return base + params
+
 
 if __name__ == "__main__":
     test_cases = [

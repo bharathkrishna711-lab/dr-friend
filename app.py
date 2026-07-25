@@ -389,11 +389,17 @@ def render_doctor_discovery(disease_name: str, section_key: str):
     section_key must be unique per call site (e.g. "uc1", "uc2", "uc3")
     since Streamlit widgets need unique keys when the same component
     appears on multiple screens.
+
+    Now also shows drive time/distance per result (Distance Matrix API,
+    one batched call for all results) and an expandable embedded map
+    (Maps Embed API) showing driving directions, one at a time
+    (accordion-style, tracked via session_state) to avoid loading many
+    maps simultaneously.
     """
     st.divider()
     st.subheader("Find Care Near You")
 
-    from core.doctor_discovery import find_nearby_doctors, get_specialty_for_disease
+    from core.doctor_discovery import find_nearby_doctors, get_specialty_for_disease, get_distances, get_embed_map_url
     specialty = get_specialty_for_disease(disease_name)
     st.markdown(f"Based on your condition, a **{specialty}** would be the most relevant specialist.")
 
@@ -402,6 +408,10 @@ def render_doctor_discovery(disease_name: str, section_key: str):
         placeholder="e.g. Bandra, Mumbai",
         key=f"location_input_{section_key}",
     )
+
+    expanded_map_key = f"expanded_map_{section_key}"
+    if expanded_map_key not in st.session_state:
+        st.session_state[expanded_map_key] = None
 
     if st.button("Find Doctors", key=f"find_doctors_btn_{section_key}"):
         if not location.strip():
@@ -415,9 +425,39 @@ def render_doctor_discovery(disease_name: str, section_key: str):
             elif not result["results"]:
                 st.info("No doctors found for this search. Try a nearby larger city or area.")
             else:
-                for doc in result["results"]:
-                    rating_display = f"⭐ {doc['rating']} ({doc['total_ratings']} reviews)" if doc["rating"] != "No rating" else "No rating yet"
-                    st.markdown(f"""<div style="background: #21262d; border: 1px solid #30363d; border-radius: 12px; padding: 14px 18px; margin-bottom: 10px;"><p style="font-weight:700; font-size:14.5px; color:#ffffff; margin-bottom:4px;">{doc['name']}</p><p style="font-size:12.5px; color:#4dd4e8; margin-bottom:4px;">{rating_display}</p><p style="font-size:12.5px; color:#8b949e; margin:0;">{doc['address']}</p></div>""", unsafe_allow_html=True)
+                st.session_state[f"doctor_results_{section_key}"] = result["results"]
+                st.session_state[f"doctor_origin_{section_key}"] = location.strip()
+
+    stored_results = st.session_state.get(f"doctor_results_{section_key}")
+    stored_origin = st.session_state.get(f"doctor_origin_{section_key}")
+
+    if stored_results:
+        addresses = [doc["address"] for doc in stored_results]
+        with st.spinner("Calculating distances..."):
+            distances = get_distances(stored_origin, addresses)
+
+        for i, doc in enumerate(stored_results):
+            rating_display = f"⭐ {doc['rating']} ({doc['total_ratings']} reviews)" if doc["rating"] != "No rating" else "No rating yet"
+            dist_info = distances.get(doc["address"])
+            dist_display = ""
+            if dist_info:
+                dist_display = f"""<div style="text-align:right; flex-shrink:0;"><p style="font-size:13px; font-weight:600; color:#ffffff; margin:0 0 2px 0;">{dist_info['duration_text']}</p><p style="font-size:12px; color:#8b949e; margin:0;">{dist_info['distance_text']}</p></div>"""
+
+            st.markdown(f"""<div style="background: #21262d; border: 1px solid #30363d; border-radius: 12px; padding: 14px 18px; margin-bottom: 10px;"><div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;"><div><p style="font-weight:700; font-size:14.5px; color:#ffffff; margin-bottom:4px;">{doc['name']}</p><p style="font-size:12.5px; color:#4dd4e8; margin-bottom:4px;">{rating_display}</p><p style="font-size:12.5px; color:#8b949e; margin:0;">{doc['address']}</p></div>{dist_display}</div></div>""", unsafe_allow_html=True)
+
+            if st.button("Show directions", key=f"directions_btn_{section_key}_{i}"):
+                if st.session_state[expanded_map_key] == i:
+                    st.session_state[expanded_map_key] = None
+                else:
+                    st.session_state[expanded_map_key] = i
+
+            if st.session_state[expanded_map_key] == i:
+                map_url = get_embed_map_url(stored_origin, doc["address"])
+                if map_url:
+                    st.components.v1.html(
+                        f'<iframe src="{map_url}" width="100%" height="300" style="border:0; border-radius:12px;"></iframe>',
+                        height=310,
+                    )
 
 # -----------------------------------------------------------------------
 # SCREEN 0: ENTRY POINT
