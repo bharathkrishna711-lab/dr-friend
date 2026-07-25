@@ -66,10 +66,20 @@ RULES:
 - Do not invent new criteria or use outside medical knowledge.
 - If any "When It's an Emergency" criterion is met, always classify as
   "Go to Emergency" -- this overrides all other levels.
+- Match criteria STRICTLY and LITERALLY. If a criterion specifies a
+  duration, frequency, or severity qualifier (e.g. "lasting more than
+  2 days", "persistent", "severe", "unable to keep fluids down"), do
+  NOT count it as matched unless the patient's symptoms explicitly
+  include that same qualifier. Simply mentioning a symptom that appears
+  in a criterion (e.g. "vomiting") does NOT match a criterion that
+  requires a qualified version of it (e.g. "persistent vomiting").
+  When in doubt about whether a qualifier is met, do NOT match the
+  criterion -- prefer "Self-Care at Home" over an unsupported escalation.
 - Return ONLY a JSON object, no other text, in exactly this format:
 {{
     "urgency_level": "<one of the four levels above>",
     "matched_criteria": ["<criterion text that was matched, if any>"],
+    "patient_evidence": ["<the EXACT phrase from the patient's symptoms that satisfies each matched criterion, quoted verbatim -- if you cannot find an exact phrase that explicitly satisfies a qualifier like 'persistent' or 'severe', do not include that criterion as matched>"],
     "reasoning": "<one sentence explaining the match>"
 }}
 
@@ -112,6 +122,74 @@ def check_uc2_urgency(symptoms: str, retrieved_context: str) -> dict:
             "matched_criteria": [],
             "reasoning": "Could not parse urgency classification; defaulting to a cautious level.",
         }
+    # Code-level safeguard: reject any matched "persistent"/"severe"/
+    # qualifier-based criterion if the patient_evidence doesn't actually
+    # contain qualifying language. This does not trust the LLM's own
+    # judgment alone -- it verifies the LLM's cited evidence contains
+    # real support for persistence/severity claims, since prompt-only
+    # instructions were tested and found insufficient to reliably
+    # prevent the LLM from treating a bare symptom mention as satisfying
+    # a qualified criterion.
+    # WHY WE CHECK FOR LAB-VALUE EVIDENCE SEPARATELY (Bug 14):
+    # UC3 passes lab findings as evidence (e.g. "C-Reactive Protein
+    # (CRP): 9.8 mg/L (High)"), which reads nothing like a symptom
+    # sentence but is still strong, objective evidence on its own.
+    def is_lab_value_evidence(evidence_text: str) -> bool:
+        lab_flag_markers = ["(high)", "(low)", "mg/dl", "mg/l", "uiu/ml",
+                             "/cumm", "mil/cumm", "g/dl", "%", "u/l"]
+        evidence_lower = evidence_text.lower()
+        return any(marker in evidence_lower for marker in lab_flag_markers)
+
+    # BUG 19 FIX -- replaces the old QUALIFIER_WORDS keyword-matching
+    # approach entirely. The old approach checked whether the LLM's
+    # quoted evidence contained one of a fixed list of "seriousness
+    # words" (e.g. "severe", "worsening"). This broke on criteria with
+    # OR-conditions -- e.g. "chest pain that is severe, crushing, OR
+    # radiating to the arm" -- where evidence genuinely satisfying the
+    # criterion via "crushing"/"radiating" got rejected simply because
+    # the literal word "severe" wasn't separately present. This
+    # incorrectly downgraded a textbook cardiac emergency (crushing
+    # chest pain radiating to the arm) all the way to "Self-Care at
+    # Home", despite the LLM's original classification being correct.
+    #
+    # NEW APPROACH: verify that the LLM's quoted patient_evidence is a
+    # genuine excerpt of what the patient actually said (a real
+    # substring match, allowing for minor whitespace/case differences),
+    # rather than checking for specific severity words. This still
+    # catches Bug 6's original problem -- an LLM claiming a match with
+    # fabricated or unsupported "evidence" -- without rejecting valid
+    # matches just because they used different words than our fixed
+    # list expected.
+    symptoms_lower = symptoms.lower()
+    evidence_list = result.get("patient_evidence", [])
+    verified_criteria = []
+    for i, criterion in enumerate(result.get("matched_criteria", [])):
+        evidence_text = evidence_list[i] if i < len(evidence_list) else ""
+        evidence_lower = evidence_text.lower().strip()
+
+        if is_lab_value_evidence(evidence_text):
+            # Lab findings are objective on their own -- no need to
+            # verify against symptom text, which wouldn't contain them.
+            verified_criteria.append(criterion)
+            continue
+
+        if evidence_lower and evidence_lower in symptoms_lower:
+            # The LLM's quoted evidence genuinely appears in what the
+            # patient said -- trust the match, whatever words it used.
+            verified_criteria.append(criterion)
+        # else: silently drop this criterion -- the LLM's quoted
+        # evidence doesn't actually appear in the patient's own words,
+        # suggesting it may have been fabricated or paraphrased beyond
+        # what was actually said.
+
+    if len(verified_criteria) < len(result.get("matched_criteria", [])):
+        # Some criteria were rejected -- re-derive urgency level from
+        # what's actually left, rather than trusting the LLM's original
+        # level which was based on the unverified criteria set.
+        result["matched_criteria"] = verified_criteria
+        if not verified_criteria:
+            result["urgency_level"] = "Self-Care at Home"
+            result["reasoning"] = "No criteria could be confirmed against explicit patient-reported evidence; downgraded from initial assessment."
 
     # Validate the returned level is actually one of our four fixed
     # options -- if the LLM drifts from the exact string (same class of

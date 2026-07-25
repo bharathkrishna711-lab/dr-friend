@@ -16,7 +16,7 @@ load_dotenv()
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rag"))
-from retriever import load_vector_store
+from retriever import load_vector_store, PRIMARY_CONDITION_PROMPT
 from urgency_uc2 import check_uc2_urgency
 
 from langchain_openai import ChatOpenAI
@@ -129,7 +129,7 @@ def interpret_lab_report(structured_values: list, symptoms: str) -> dict:
             seen_content.add(key)
             retrieved_docs.append(doc)
 
-    # CRITICAL SAFETY CHECK: never let the LLM generate an interpretation
+    # CRITICAL SAFETY CHECK: never let the LLM generate an interpretation   
     # from empty context. An LLM asked to interpret findings with no
     # retrieved reference material will silently fall back to its own
     # general knowledge instead of refusing -- which breaks the entire
@@ -145,6 +145,7 @@ def interpret_lab_report(structured_values: list, symptoms: str) -> dict:
                 "and symptoms. Please consult a healthcare professional to "
                 "interpret these results directly."
             ),
+            "primary_condition": "Unclear",
             "sources": [],
             "source_excerpts": [],
             "chunks_retrieved": 0,
@@ -170,10 +171,47 @@ def interpret_lab_report(structured_values: list, symptoms: str) -> dict:
         "findings": findings_summary,
     })
 
+    # Structured primary_condition field, mirroring UC2's approach in
+    # ask_dr_friend_uc2(). Combines symptoms and findings into one
+    # "question" input since lab values are often the stronger signal
+    # in UC3 (see Bug 4 -- Dengue was correctly identified from lab
+    # values alone with no fever mentioned in symptoms).
+    condition_prompt = ChatPromptTemplate.from_template(PRIMARY_CONDITION_PROMPT)
+    condition_chain = condition_prompt | llm | parser
+    primary_condition = condition_chain.invoke({
+        "context": context_text,
+        "question": f"{symptoms}. Abnormal findings: {findings_summary}",
+    }).strip()
+
     urgency_result = check_uc2_urgency(
         symptoms=f"{symptoms}. Abnormal findings: {findings_summary}",
         retrieved_context=context_text,
     )
+
+    # SAFETY FLOOR (Bug 16): check_uc2_urgency() can only escalate
+    # urgency based on criteria it found in the retrieved documents. If
+    # the knowledge base has no document covering a particular abnormal
+    # finding (e.g. no dedicated kidney/renal disease document to match
+    # against elevated creatinine, BUN, low eGFR, or high potassium),
+    # those findings are silently never considered at all -- not
+    # rejected, just never evaluated. This was found to let a lab
+    # report with several genuinely concerning abnormal values (kidney
+    # function decline plus dangerous hyperkalemia) reach "Self-Care at
+    # Home" simply because none of it matched any retrieved criteria.
+    # Deterministic rule, consistent with this project's rule-based-
+    # where-possible philosophy: any abnormal (High/Low) lab finding is
+    # reason enough to rule out "Self-Care at Home" as an outcome for a
+    # UC3 report -- lab abnormalities always warrant at least a routine
+    # doctor review, even when no specific matched criterion escalated
+    # it further.
+    if abnormal and urgency_result["urgency_level"] == "Self-Care at Home":
+        urgency_result["urgency_level"] = "See a Doctor Soon"
+        urgency_result["reasoning"] = (
+            "Abnormal lab findings were detected, but our reference "
+            "documents did not contain matching criteria to assess their "
+            "urgency further. As a precaution, we recommend a routine "
+            "doctor review rather than self-care alone."
+        )
 
     sources = []
     source_excerpts = []
@@ -192,6 +230,7 @@ def interpret_lab_report(structured_values: list, symptoms: str) -> dict:
         "abnormal_findings": abnormal,
         "findings_summary": findings_summary,
         "interpretation": interpretation,
+        "primary_condition": primary_condition,
         "sources": sources,
         "source_excerpts": source_excerpts,
         "chunks_retrieved": len(retrieved_docs),
@@ -225,3 +264,4 @@ if __name__ == "__main__":
     print(f"CHUNKS RETRIEVED: {result['chunks_retrieved']}")
     print(f"\nURGENCY LEVEL: {result['urgency_level']}")
     print(f"MATCHED CRITERIA: {result['urgency_matched_criteria']}")
+    print(f"\nPRIMARY CONDITION: {result['primary_condition']}")
