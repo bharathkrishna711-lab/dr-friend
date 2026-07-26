@@ -9,7 +9,7 @@ from core.predictor import predict_disease
 from core.urgency_engine import assess_urgency
 from rag.disease_lookup import get_disease_overview
 import os
-
+import re
 
 
 st.set_page_config(
@@ -181,6 +181,19 @@ st.markdown("""
         border: 1px solid #30363d !important;
         border-radius: 10px !important;
         font-size: 14px !important;
+    }
+            
+    .stDownloadButton > button {
+        background: #21262d !important;
+        color: #e6edf3 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 10px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+    }
+    .stDownloadButton > button:hover {
+        background: #30363d !important;
+        border-color: #4d9fff !important;
     }
 
     [data-testid="stMetricLabel"] {
@@ -655,16 +668,33 @@ elif st.session_state.stage == "chat":
         with st.chat_message("user"):
             st.markdown(user_input)
 
-        emergency_keywords = [
-            "spo2 9", "oxygen 9", "o2 9", "saturation 9",
+        
+        # Bug 23 fix: "spo2 9" (and similar) were plain substring
+        # checks meant to catch dangerously LOW readings like "SpO2
+        # 90%" -- but this also matched perfectly healthy readings
+        # like "SpO2 97%", since 97 also starts with the digit 9. This
+        # caused the emergency fast-path to incorrectly re-trigger on
+        # normal vitals, asking for information the patient had just
+        # provided. Fixed by extracting the actual numeric SpO2 value
+        # and comparing it against a real threshold (<93, matching
+        # UC1's own NEWS2 engine threshold), instead of naive digit
+        # substring matching.
+        emergency_text_keywords = [
             "cant breathe", "can't breathe", "cannot breathe",
             "difficulty breathing", "not breathing",
-            "bp 18", "blood pressure 18",
             "heart attack", "unconscious", "fainted", "passing out",
             "chest pain"
         ]
         user_lower = user_input.lower()
-        is_emergency = any(keyword in user_lower for keyword in emergency_keywords)
+        is_emergency = any(keyword in user_lower for keyword in emergency_text_keywords)
+
+        spo2_match = re.search(r"spo2[:\s]*?(\d{2,3})", user_lower)
+        if spo2_match and int(spo2_match.group(1)) < 93:
+            is_emergency = True
+
+        bp_match = re.search(r"bp[:\s]*?(\d{2,3})", user_lower)
+        if bp_match and int(bp_match.group(1)) >= 180:
+            is_emergency = True
 
         if is_emergency and len(st.session_state.messages) >= 2:
             if not st.session_state.emergency_vitals_requested:
@@ -896,6 +926,26 @@ elif st.session_state.stage == "results":
         "for professional medical advice. Always consult a qualified doctor."
     )
 
+
+    from core.pdf_export import generate_health_summary_pdf
+    pdf_bytes = generate_health_summary_pdf(
+        condition=top_disease,
+        urgency_level=urgency["level"],
+        urgency_reasoning=urgency["description"],
+        guidance_text="\n".join(advice_list),
+        sources=[overview['citation']] if overview else [],
+        pathway="UC1 - Vitals + Symptoms",
+        matched_criteria=urgency.get("triggered_rules"),
+    )
+    st.download_button(
+        "Download Health Summary (PDF)",
+        data=pdf_bytes,
+        file_name="dr_friend_summary_uc1.pdf",
+        mime="application/pdf",
+    )
+
+
+
     render_doctor_discovery(top_disease, "uc1")
 
     if st.button("Start New Consultation", type="primary"):
@@ -1047,6 +1097,24 @@ elif st.session_state.stage == "uc2_results":
     st.caption(
         "Dr. Friend is a healthcare guidance assistant, not a replacement "
         "for professional medical advice. Always consult a qualified doctor."
+    )
+
+
+    from core.pdf_export import generate_health_summary_pdf
+    pdf_bytes = generate_health_summary_pdf(
+        condition=result.get("primary_condition", "Unclear"),
+        urgency_level=result["urgency_level"],
+        urgency_reasoning=result["urgency_reasoning"],
+        guidance_text=result["guidance"],
+        sources=result.get("sources", []),
+        pathway="UC2 - Symptoms Only",
+        matched_criteria=result.get("urgency_matched_criteria"),
+    )
+    st.download_button(
+        "Download Health Summary (PDF)",
+        data=pdf_bytes,
+        file_name="dr_friend_summary_uc2.pdf",
+        mime="application/pdf",
     )
 
     render_doctor_discovery(result.get("primary_condition", "General"), "uc2")
@@ -1224,6 +1292,24 @@ elif st.session_state.stage == "uc3_results":
     st.caption(
         "Dr. Friend is a healthcare guidance assistant, not a replacement "
         "for professional medical advice. Always consult a qualified doctor."
+    )
+
+
+    from core.pdf_export import generate_health_summary_pdf
+    pdf_bytes = generate_health_summary_pdf(
+        condition=result.get("primary_condition", "Unclear"),
+        urgency_level=result["urgency_level"],
+        urgency_reasoning=result["urgency_reasoning"],
+        guidance_text=result["interpretation"],
+        sources=result.get("sources", []),
+        pathway="UC3 - Lab Report",
+        matched_criteria=result.get("urgency_matched_criteria"),
+    )
+    st.download_button(
+        "Download Health Summary (PDF)",
+        data=pdf_bytes,
+        file_name="dr_friend_summary_uc3.pdf",
+        mime="application/pdf",
     )
 
     render_doctor_discovery(result.get("primary_condition", "General"), "uc3")
