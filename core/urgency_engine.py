@@ -248,7 +248,7 @@ def assess_urgency(vitals: dict, predicted_disease: str) -> dict:
 # Quick test - run directly to verify urgency engine works
 # -----------------------------------------------------------------------
 if __name__ == "__main__":
-    # Rahul Sharma from sample PDF
+    
     test_vitals = {
         "spo2_percent": 95.0,
         "temperature_c": 38.5,
